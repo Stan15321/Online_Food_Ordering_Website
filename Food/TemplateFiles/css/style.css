@@ -426,4 +426,365 @@ h2 {
     width: 100%;
     -webkit-transition: all .2s;
     transition: all .2s;
+  }
+  .offer_section .box .detail-box h5 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 24px;
+    margin: 0;
+  }
+  
+  .offer_section .box .detail-box h6 {
+    font-family: 'Dancing Script', cursive;
+    margin: 10px 0;
+  }
+  
+  .offer_section .box .detail-box h6 span {
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+  
+  .offer_section .box .detail-box a {
+    display: inline-block;
+    padding: 10px 30px;
+    background-color: #ffbe33;
+    color: #ffffff;
+    border-radius: 45px;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    border: none;
+  }
+  
+  .offer_section .box .detail-box a:hover {
+    background-color: #e69c00;
+  }
+  
+  .offer_section .box .detail-box a svg {
+    width: 20px;
+    height: auto;
+    margin-left: 5px;
+    fill: #ffffff;
+  }
+  
+  .offer_section .box:hover .img-box img {
+    -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+  }
+  
+  .food_section .filters_menu {
+    padding: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    list-style-type: none;
+    margin: 45px 0 20px 0;
+  }
+  
+  .food_section .filters_menu li {
+    padding: 7px 25px;
+    cursor: pointer;
+    border-radius: 25px;
+  }
+  
+  .food_section .filters_menu li.active {
+    background-color: #222831;
+    color: #ffffff;
+  }
+  .food_section .box {
+    position: relative;
+    margin-top: 25px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    color: #ffffff;
+    border-radius: 15px;
+    overflow: hidden;
+    background: linear-gradient(to bottom, #f1f2f3 25px, #222831 25px);
+  }
+  
+  .food_section .box .img-box {
+    background: #f1f2f3;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    height: 215px;
+    border-radius: 0 0 0 45px;
+    margin: -1px;
+    padding: 25px;
+  }
+  
+  .food_section .box .img-box img {
+    max-width: 100%;
+    max-height: 145px;
+    -webkit-transition: all .2s;
+    transition: all .2s;
+  }
+  
+  .food_section .box .detail-box {
+    padding: 25px;
+  }
+  
+  .food_section .box .detail-box h5 {
+    font-weight: 600;
+  }
+  
+  .food_section .box .detail-box p {
+    font-size: 15px;
+  }
+  
+  .food_section .box .detail-box h6 {
+    margin-top: 10px;
+  }
+  
+  .food_section .box .options {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+  }
+  
+  .food_section .box .options a {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    background: #ffbe33;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+  
+  .food_section .box .options a svg {
+    width: 18px;
+    height: auto;
+    fill: #ffffff;
+  }
+  
+  .food_section .box:hover .img-box img {
+    -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+  }
+  
+  .food_section .btn-box {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    margin-top: 45px;
+  }
+  
+  .food_section .btn-box a {
+    display: inline-block;
+    padding: 10px 55px;
+    background-color: #ffbe33;
+    color: #ffffff;
+    border-radius: 45px;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    border: none;
+  }
+  
+  .food_section .btn-box a:hover {
+    background-color: #e69c00;
+  }
+  
+  .about_section {
+    background: #222831;
+    color: #ffffff;
+  }
+  .about_section .row {
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+  
+  .about_section .img-box {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+  
+  .about_section .img-box img {
+    width: 100%;
+    max-width: 445px;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .about_section .detail-box p {
+    margin-top: 15px;
+  }
+  
+  .about_section .detail-box a {
+    display: inline-block;
+    padding: 10px 45px;
+    background-color: #ffbe33;
+    color: #ffffff;
+    border-radius: 45px;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    border: none;
+    margin-top: 15px;
+  }
+  
+  .about_section .detail-box a:hover {
+    background-color: #e69c00;
+  }
+  
+  .book_section {
+    position: relative;
+  }
+  
+  .book_section .heading_container {
+    margin-bottom: 25px;
+  }
+  
+  .book_section .form_container .form-control {
+    width: 100%;
+    border: none;
+    height: 50px;
+    margin-bottom: 25px;
+    padding-left: 25px;
+    border: 1px solid #999;
+    outline: none;
+    color: #000000;
+    border-radius: 5px;
+    outline: none;
+    -webkit-box-shadow: none;
+            box-shadow: none;
+  }
+  
+  .book_section .form_container .form-control::-webkit-input-placeholder {
+    color: #222222;
+  }
+  
+  .book_section .form_container .form-control:-ms-input-placeholder {
+    color: #222222;
+  }
+  
+  .book_section .form_container .form-control::-ms-input-placeholder {
+    color: #222222;
+  }
+  
+  .book_section .form_container .form-control::placeholder {
+    color: #222222;
+  }
+  
+  .book_section .form_container .nice-select .current {
+    font-size: 16px;
+  }
+  
+  .book_section .form_container button {
+    margin-top: 15px;
+    border: none;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 10px 55px;
+    background-color: #ffbe33;
+    color: #ffffff;
+    border-radius: 45px;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    border: none;
+  }
+  
+  .book_section .form_container button:hover {
+    background-color: #e69c00;
+  }
+  .book_section .map_container {
+    width: 100%;
+    height: 345px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .book_section .map_container #googleMap {
+    height: 100%;
+    min-height: 100%;
+    width: 100%;
+  }
+  
+  /* client section start */
+  .client_section .heading_container {
+    margin-bottom: 30px;
+  }
+  
+  .client_section .box {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    margin: 15px;
+  }
+  
+  .client_section .box .img-box {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    width: 115px;
+    position: relative;
+    margin-top: 30px;
+  }
+  
+  .client_section .box .img-box img {
+    border-radius: 100%;
+    border: 5px solid #ffbe33;
+    position: relative;
+  }
+  
+  .client_section .box .img-box::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    background-color: #ffbe33;
+    -webkit-transform: rotate(45deg) translateX(-50%);
+            transform: rotate(45deg) translateX(-50%);
+  }
+  
+  .client_section .box .detail-box {
+    background-color: #222831;
+    color: #ffffff;
+    padding: 25px 25px 15px 25px;
+    border-radius: 5px;
+  }
+  
+  .client_section .box .detail-box h6 {
+    font-weight: 600;
+    font-size: 18px;
+    margin: 15px 0 5px 0;
   }  
