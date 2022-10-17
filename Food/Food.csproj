@@ -110,6 +110,9 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="User\User.Master" />
+    <Content Include="TemplateFiles\fonts\fontawesome-webfont.ttf" />
+    <Content Include="TemplateFiles\fonts\fontawesome-webfont.woff" />
+    <Content Include="TemplateFiles\fonts\fontawesome-webfont.woff2" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -120,6 +123,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="TemplateFiles\css\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
