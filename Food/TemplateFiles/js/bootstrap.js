@@ -1180,3 +1180,816 @@ var Carousel =
             this.cycle();
         }
     }; 
+    Carousel._jQueryInterface = function _jQueryInterface(config) {
+        return this.each(function () {
+            var data = $(this).data(DATA_KEY$2);
+
+            var _config = _objectSpread({}, Default, $(this).data());
+
+            if (typeof config === "object") {
+                _config = _objectSpread({}, _config, config);
+            }
+
+            var action =
+                typeof config === "string" ? config : _config.slide;
+
+            if (!data) {
+                data = new Carousel(this, _config);
+                $(this).data(DATA_KEY$2, data);
+            }
+
+            if (typeof config === "number") {
+                data.to(config);
+            } else if (typeof action === "string") {
+                if (typeof data[action] === "undefined") {
+                    throw new TypeError(
+                        'No method named "' + action + '"'
+                    );
+                }
+
+                data[action]();
+            } else if (_config.interval && _config.ride) {
+                data.pause();
+                data.cycle();
+            }
+        });
+    };
+
+    Carousel._dataApiClickHandler = function _dataApiClickHandler(
+        event
+    ) {
+        var selector = Util.getSelectorFromElement(this);
+
+        if (!selector) {
+            return;
+        }
+
+        var target = $(selector)[0];
+
+        if (!target || !$(target).hasClass(ClassName$2.CAROUSEL)) {
+            return;
+        }
+
+        var config = _objectSpread(
+            {},
+            $(target).data(),
+            $(this).data()
+        );
+
+        var slideIndex = this.getAttribute("data-slide-to");
+
+        if (slideIndex) {
+            config.interval = false;
+        }
+
+        Carousel._jQueryInterface.call($(target), config);
+
+        if (slideIndex) {
+            $(target).data(DATA_KEY$2).to(slideIndex);
+        }
+
+        event.preventDefault();
+    };
+
+    _createClass(Carousel, null, [
+        {
+            key: "VERSION",
+            get: function get() {
+                return VERSION$2;
+            },
+        },
+        {
+            key: "Default",
+            get: function get() {
+                return Default;
+            },
+        },
+    ]);
+
+    return Carousel;
+})();
+/**
+* ------------------------------------------------------------------------
+* Data Api implementation
+* ------------------------------------------------------------------------
+*/
+
+$(document).on(
+Event$2.CLICK_DATA_API,
+Selector$2.DATA_SLIDE,
+Carousel._dataApiClickHandler
+);
+$(window).on(Event$2.LOAD_DATA_API, function () {
+var carousels = [].slice.call(
+    document.querySelectorAll(Selector$2.DATA_RIDE)
+);
+
+for (var i = 0, len = carousels.length; i < len; i++) {
+    var $carousel = $(carousels[i]);
+
+    Carousel._jQueryInterface.call($carousel, $carousel.data());
+}
+});
+/**
+* ------------------------------------------------------------------------
+* jQuery
+* ------------------------------------------------------------------------
+*/
+
+$.fn[NAME$2] = Carousel._jQueryInterface;
+$.fn[NAME$2].Constructor = Carousel;
+
+$.fn[NAME$2].noConflict = function () {
+$.fn[NAME$2] = JQUERY_NO_CONFLICT$2;
+return Carousel._jQueryInterface;
+};
+
+/**
+* ------------------------------------------------------------------------
+* Constants
+* ------------------------------------------------------------------------
+*/
+
+var NAME$3 = "collapse";
+var VERSION$3 = "4.3.1";
+var DATA_KEY$3 = "bs.collapse";
+var EVENT_KEY$3 = "." + DATA_KEY$3;
+var DATA_API_KEY$3 = ".data-api";
+var JQUERY_NO_CONFLICT$3 = $.fn[NAME$3];
+var Default$1 = {
+toggle: true,
+parent: "",
+};
+var DefaultType$1 = {
+toggle: "boolean",
+parent: "(string|element)",
+};
+var Event$3 = {
+SHOW: "show" + EVENT_KEY$3,
+SHOWN: "shown" + EVENT_KEY$3,
+HIDE: "hide" + EVENT_KEY$3,
+HIDDEN: "hidden" + EVENT_KEY$3,
+CLICK_DATA_API: "click" + EVENT_KEY$3 + DATA_API_KEY$3,
+};
+var ClassName$3 = {
+SHOW: "show",
+COLLAPSE: "collapse",
+COLLAPSING: "collapsing",
+COLLAPSED: "collapsed",
+};
+var Dimension = {
+WIDTH: "width",
+HEIGHT: "height",
+};
+var Selector$3 = {
+ACTIVES: ".show, .collapsing",
+DATA_TOGGLE: '[data-toggle="collapse"]',
+/**
+ * ------------------------------------------------------------------------
+ * Class Definition
+ * ------------------------------------------------------------------------
+ */
+};
+
+var Collapse =
+/*#__PURE__*/
+(function () {
+    function Collapse(element, config) {
+        this._isTransitioning = false;
+        this._element = element;
+        this._config = this._getConfig(config);
+        this._triggerArray = [].slice.call(
+            document.querySelectorAll(
+                '[data-toggle="collapse"][href="#' +
+                    element.id +
+                    '"],' +
+                    ('[data-toggle="collapse"][data-target="#' +
+                        element.id +
+                        '"]')
+            )
+        );
+        var toggleList = [].slice.call(
+            document.querySelectorAll(Selector$3.DATA_TOGGLE)
+        );
+
+        for (var i = 0, len = toggleList.length; i < len; i++) {
+            var elem = toggleList[i];
+            var selector = Util.getSelectorFromElement(elem);
+            var filterElement = [].slice
+                .call(document.querySelectorAll(selector))
+                .filter(function (foundElem) {
+                    return foundElem === element;
+                });
+
+            if (selector !== null && filterElement.length > 0) {
+                this._selector = selector;
+
+                this._triggerArray.push(elem);
+            }
+        }
+
+        this._parent = this._config.parent ? this._getParent() : null;
+
+        if (!this._config.parent) {
+            this._addAriaAndCollapsedClass(
+                this._element,
+                this._triggerArray
+            );
+        }
+
+        if (this._config.toggle) {
+            this.toggle();
+        }
+    } // Getters
+
+    var _proto = Collapse.prototype;
+
+    // Public
+    _proto.toggle = function toggle() {
+        if ($(this._element).hasClass(ClassName$3.SHOW)) {
+            this.hide();
+        } else {
+            this.show();
+        }
+    };
+
+    _proto.show = function show() {
+        var _this = this;
+
+        if (
+            this._isTransitioning ||
+            $(this._element).hasClass(ClassName$3.SHOW)
+        ) {
+            return;
+        }
+
+        var actives;
+        var activesData;
+
+        if (this._parent) {
+            actives = [].slice
+                .call(this._parent.querySelectorAll(Selector$3.ACTIVES))
+                .filter(function (elem) {
+                    if (typeof _this._config.parent === "string") {
+                        return (
+                            elem.getAttribute("data-parent") ===
+                            _this._config.parent
+                        );
+                    }
+
+                    return elem.classList.contains(
+                        ClassName$3.COLLAPSE
+                    );
+                });
+
+            if (actives.length === 0) {
+                actives = null;
+            }
+        }
+
+        if (actives) {
+            activesData = $(actives)
+                .not(this._selector)
+                .data(DATA_KEY$3);
+
+            if (activesData && activesData._isTransitioning) {
+                return;
+            }
+        }
+
+        var startEvent = $.Event(Event$3.SHOW);
+        $(this._element).trigger(startEvent);
+
+        if (startEvent.isDefaultPrevented()) {
+            return;
+        }
+
+        if (actives) {
+            Collapse._jQueryInterface.call(
+                $(actives).not(this._selector),
+                "hide"
+            );
+
+            if (!activesData) {
+                $(actives).data(DATA_KEY$3, null);
+            }
+        }
+
+        var dimension = this._getDimension();
+
+        $(this._element)
+            .removeClass(ClassName$3.COLLAPSE)
+            .addClass(ClassName$3.COLLAPSING);
+        this._element.style[dimension] = 0;
+
+        if (this._triggerArray.length) {
+            $(this._triggerArray)
+                .removeClass(ClassName$3.COLLAPSED)
+                .attr("aria-expanded", true);
+        }
+
+        this.setTransitioning(true);
+
+        var complete = function complete() {
+            $(_this._element)
+                .removeClass(ClassName$3.COLLAPSING)
+                .addClass(ClassName$3.COLLAPSE)
+                .addClass(ClassName$3.SHOW);
+            _this._element.style[dimension] = "";
+
+            _this.setTransitioning(false);
+
+            $(_this._element).trigger(Event$3.SHOWN);
+        };
+
+        var capitalizedDimension =
+            dimension[0].toUpperCase() + dimension.slice(1);
+        var scrollSize = "scroll" + capitalizedDimension;
+        var transitionDuration = Util.getTransitionDurationFromElement(
+            this._element
+        );
+        $(this._element)
+            .one(Util.TRANSITION_END, complete)
+            .emulateTransitionEnd(transitionDuration);
+        this._element.style[dimension] =
+            this._element[scrollSize] + "px";
+    };
+
+    _proto.hide = function hide() {
+        var _this2 = this;
+
+        if (
+            this._isTransitioning ||
+            !$(this._element).hasClass(ClassName$3.SHOW)
+        ) {
+            return;
+        }
+
+        var startEvent = $.Event(Event$3.HIDE);
+        $(this._element).trigger(startEvent);
+
+        if (startEvent.isDefaultPrevented()) {
+            return;
+        }
+
+        var dimension = this._getDimension();
+
+        this._element.style[dimension] =
+            this._element.getBoundingClientRect()[dimension] + "px";
+        Util.reflow(this._element);
+        $(this._element)
+            .addClass(ClassName$3.COLLAPSING)
+            .removeClass(ClassName$3.COLLAPSE)
+            .removeClass(ClassName$3.SHOW);
+        var triggerArrayLength = this._triggerArray.length;
+
+        if (triggerArrayLength > 0) {
+            for (var i = 0; i < triggerArrayLength; i++) {
+                var trigger = this._triggerArray[i];
+                var selector = Util.getSelectorFromElement(trigger);
+
+                if (selector !== null) {
+                    var $elem = $(
+                        [].slice.call(
+                            document.querySelectorAll(selector)
+                        )
+                    );
+
+                    if (!$elem.hasClass(ClassName$3.SHOW)) {
+                        $(trigger)
+                            .addClass(ClassName$3.COLLAPSED)
+                            .attr("aria-expanded", false);
+                    }
+                }
+            }
+        }
+
+        this.setTransitioning(true);
+
+        var complete = function complete() {
+            _this2.setTransitioning(false);
+
+            $(_this2._element)
+                .removeClass(ClassName$3.COLLAPSING)
+                .addClass(ClassName$3.COLLAPSE)
+                .trigger(Event$3.HIDDEN);
+        };
+
+        this._element.style[dimension] = "";
+        var transitionDuration = Util.getTransitionDurationFromElement(
+            this._element
+        );
+        $(this._element)
+            .one(Util.TRANSITION_END, complete)
+            .emulateTransitionEnd(transitionDuration);
+    };
+
+    _proto.setTransitioning = function setTransitioning(
+        isTransitioning
+    ) {
+        this._isTransitioning = isTransitioning;
+    };
+
+    _proto.dispose = function dispose() {
+        $.removeData(this._element, DATA_KEY$3);
+        this._config = null;
+        this._parent = null;
+        this._element = null;
+        this._triggerArray = null;
+        this._isTransitioning = null;
+    }; // Private
+
+    _proto._getConfig = function _getConfig(config) {
+        config = _objectSpread({}, Default$1, config);
+        config.toggle = Boolean(config.toggle); // Coerce string values
+
+        Util.typeCheckConfig(NAME$3, config, DefaultType$1);
+        return config;
+    };
+
+    _proto._getDimension = function _getDimension() {
+        var hasWidth = $(this._element).hasClass(Dimension.WIDTH);
+        return hasWidth ? Dimension.WIDTH : Dimension.HEIGHT;
+    };
+
+    _proto._getParent = function _getParent() {
+        var _this3 = this;
+
+        var parent;
+
+        if (Util.isElement(this._config.parent)) {
+            parent = this._config.parent; // It's a jQuery object
+
+            if (typeof this._config.parent.jquery !== "undefined") {
+                parent = this._config.parent[0];
+            }
+        } else {
+            parent = document.querySelector(this._config.parent);
+        }
+
+        var selector =
+            '[data-toggle="collapse"][data-parent="' +
+            this._config.parent +
+            '"]';
+        var children = [].slice.call(parent.querySelectorAll(selector));
+        $(children).each(function (i, element) {
+            _this3._addAriaAndCollapsedClass(
+                Collapse._getTargetFromElement(element),
+                [element]
+            );
+        });
+        return parent;
+    };
+    _proto._addAriaAndCollapsedClass = function _addAriaAndCollapsedClass(
+        element,
+        triggerArray
+    ) {
+        var isOpen = $(element).hasClass(ClassName$3.SHOW);
+
+        if (triggerArray.length) {
+            $(triggerArray)
+                .toggleClass(ClassName$3.COLLAPSED, !isOpen)
+                .attr("aria-expanded", isOpen);
+        }
+    }; // Static
+
+    Collapse._getTargetFromElement = function _getTargetFromElement(
+        element
+    ) {
+        var selector = Util.getSelectorFromElement(element);
+        return selector ? document.querySelector(selector) : null;
+    };
+
+    Collapse._jQueryInterface = function _jQueryInterface(config) {
+        return this.each(function () {
+            var $this = $(this);
+            var data = $this.data(DATA_KEY$3);
+
+            var _config = _objectSpread(
+                {},
+                Default$1,
+                $this.data(),
+                typeof config === "object" && config ? config : {}
+            );
+
+            if (!data && _config.toggle && /show|hide/.test(config)) {
+                _config.toggle = false;
+            }
+
+            if (!data) {
+                data = new Collapse(this, _config);
+                $this.data(DATA_KEY$3, data);
+            }
+
+            if (typeof config === "string") {
+                if (typeof data[config] === "undefined") {
+                    throw new TypeError(
+                        'No method named "' + config + '"'
+                    );
+                }
+
+                data[config]();
+            }
+        });
+    };
+
+    _createClass(Collapse, null, [
+        {
+            key: "VERSION",
+            get: function get() {
+                return VERSION$3;
+            },
+        },
+        {
+            key: "Default",
+            get: function get() {
+                return Default$1;
+            },
+        },
+    ]);
+
+    return Collapse;
+})();
+/**
+* ------------------------------------------------------------------------
+* Data Api implementation
+* ------------------------------------------------------------------------
+*/
+
+$(document).on(
+Event$3.CLICK_DATA_API,
+Selector$3.DATA_TOGGLE,
+function (event) {
+    // preventDefault only for <a> elements (which change the URL) not inside the collapsible element
+    if (event.currentTarget.tagName === "A") {
+        event.preventDefault();
+    }
+
+    var $trigger = $(this);
+    var selector = Util.getSelectorFromElement(this);
+    var selectors = [].slice.call(document.querySelectorAll(selector));
+    $(selectors).each(function () {
+        var $target = $(this);
+        var data = $target.data(DATA_KEY$3);
+        var config = data ? "toggle" : $trigger.data();
+
+        Collapse._jQueryInterface.call($target, config);
+    });
+}
+);
+/**
+* ------------------------------------------------------------------------
+* jQuery
+* ------------------------------------------------------------------------
+*/
+
+$.fn[NAME$3] = Collapse._jQueryInterface;
+$.fn[NAME$3].Constructor = Collapse;
+
+$.fn[NAME$3].noConflict = function () {
+$.fn[NAME$3] = JQUERY_NO_CONFLICT$3;
+return Collapse._jQueryInterface;
+};
+
+/**
+* ------------------------------------------------------------------------
+* Constants
+* ------------------------------------------------------------------------
+*/
+
+var NAME$4 = "dropdown";
+var VERSION$4 = "4.3.1";
+var DATA_KEY$4 = "bs.dropdown";
+var EVENT_KEY$4 = "." + DATA_KEY$4;
+var DATA_API_KEY$4 = ".data-api";
+var JQUERY_NO_CONFLICT$4 = $.fn[NAME$4];
+var ESCAPE_KEYCODE = 27; // KeyboardEvent.which value for Escape (Esc) key
+
+var SPACE_KEYCODE = 32; // KeyboardEvent.which value for space key
+
+var TAB_KEYCODE = 9; // KeyboardEvent.which value for tab key
+
+var ARROW_UP_KEYCODE = 38; // KeyboardEvent.which value for up arrow key
+
+var ARROW_DOWN_KEYCODE = 40; // KeyboardEvent.which value for down arrow key
+
+var RIGHT_MOUSE_BUTTON_WHICH = 3; // MouseEvent.which value for the right button (assuming a right-handed mouse)
+
+var REGEXP_KEYDOWN = new RegExp(
+ARROW_UP_KEYCODE + "|" + ARROW_DOWN_KEYCODE + "|" + ESCAPE_KEYCODE
+);
+var Event$4 = {
+HIDE: "hide" + EVENT_KEY$4,
+HIDDEN: "hidden" + EVENT_KEY$4,
+SHOW: "show" + EVENT_KEY$4,
+SHOWN: "shown" + EVENT_KEY$4,
+CLICK: "click" + EVENT_KEY$4,
+CLICK_DATA_API: "click" + EVENT_KEY$4 + DATA_API_KEY$4,
+KEYDOWN_DATA_API: "keydown" + EVENT_KEY$4 + DATA_API_KEY$4,
+KEYUP_DATA_API: "keyup" + EVENT_KEY$4 + DATA_API_KEY$4,
+};
+var ClassName$4 = {
+DISABLED: "disabled",
+SHOW: "show",
+DROPUP: "dropup",
+DROPRIGHT: "dropright",
+DROPLEFT: "dropleft",
+MENURIGHT: "dropdown-menu-right",
+MENULEFT: "dropdown-menu-left",
+POSITION_STATIC: "position-static",
+};
+var Selector$4 = {
+DATA_TOGGLE: '[data-toggle="dropdown"]',
+FORM_CHILD: ".dropdown form",
+MENU: ".dropdown-menu",
+NAVBAR_NAV: ".navbar-nav",
+VISIBLE_ITEMS:
+    ".dropdown-menu .dropdown-item:not(.disabled):not(:disabled)",
+};
+var AttachmentMap = {
+TOP: "top-start",
+TOPEND: "top-end",
+BOTTOM: "bottom-start",
+BOTTOMEND: "bottom-end",
+RIGHT: "right-start",
+RIGHTEND: "right-end",
+LEFT: "left-start",
+LEFTEND: "left-end",
+};
+var Default$2 = {
+offset: 0,
+flip: true,
+boundary: "scrollParent",
+reference: "toggle",
+display: "dynamic",
+};
+var DefaultType$2 = {
+offset: "(number|string|function)",
+flip: "boolean",
+boundary: "(string|element)",
+reference: "(string|element)",
+display: "string",
+/**
+ * ------------------------------------------------------------------------
+ * Class Definition
+ * ------------------------------------------------------------------------
+ */
+};
+
+var Dropdown =
+/*#__PURE__*/
+(function () {
+    function Dropdown(element, config) {
+        this._element = element;
+        this._popper = null;
+        this._config = this._getConfig(config);
+        this._menu = this._getMenuElement();
+        this._inNavbar = this._detectNavbar();
+
+        this._addEventListeners();
+    } // Getters
+
+    var _proto = Dropdown.prototype;
+
+    // Public
+    _proto.toggle = function toggle() {
+        if (
+            this._element.disabled ||
+            $(this._element).hasClass(ClassName$4.DISABLED)
+        ) {
+            return;
+        }
+
+        var parent = Dropdown._getParentFromElement(this._element);
+
+        var isActive = $(this._menu).hasClass(ClassName$4.SHOW);
+
+        Dropdown._clearMenus();
+
+        if (isActive) {
+            return;
+        }
+
+        var relatedTarget = {
+            relatedTarget: this._element,
+        };
+        var showEvent = $.Event(Event$4.SHOW, relatedTarget);
+        $(parent).trigger(showEvent);
+
+        if (showEvent.isDefaultPrevented()) {
+            return;
+        } // Disable totally Popper.js for Dropdown in Navbar
+
+        if (!this._inNavbar) {
+            /**
+             * Check for Popper dependency
+             * Popper - https://popper.js.org
+             */
+            if (typeof Popper === "undefined") {
+                throw new TypeError(
+                    "Bootstrap's dropdowns require Popper.js (https://popper.js.org/)"
+                );
+            }
+
+            var referenceElement = this._element;
+
+            if (this._config.reference === "parent") {
+                referenceElement = parent;
+            } else if (Util.isElement(this._config.reference)) {
+                referenceElement = this._config.reference; // Check if it's jQuery element
+
+                if (
+                    typeof this._config.reference.jquery !== "undefined"
+                ) {
+                    referenceElement = this._config.reference[0];
+                }
+            } // If boundary is not `scrollParent`, then set position to `static`
+            // to allow the menu to "escape" the scroll parent's boundaries
+            // https://github.com/twbs/bootstrap/issues/24251
+
+            if (this._config.boundary !== "scrollParent") {
+                $(parent).addClass(ClassName$4.POSITION_STATIC);
+            }
+
+            this._popper = new Popper(
+                referenceElement,
+                this._menu,
+                this._getPopperConfig()
+            );
+        } // If this is a touch-enabled device we add extra
+        // empty mouseover listeners to the body's immediate children;
+        // only needed because of broken event delegation on iOS
+        // https://www.quirksmode.org/blog/archives/2014/02/mouse_event_bub.html
+
+        if (
+            "ontouchstart" in document.documentElement &&
+            $(parent).closest(Selector$4.NAVBAR_NAV).length === 0
+        ) {
+            $(document.body).children().on("mouseover", null, $.noop);
+        }
+
+        this._element.focus();
+
+        this._element.setAttribute("aria-expanded", true);
+
+        $(this._menu).toggleClass(ClassName$4.SHOW);
+        $(parent)
+            .toggleClass(ClassName$4.SHOW)
+            .trigger($.Event(Event$4.SHOWN, relatedTarget));
+    };
+
+    _proto.show = function show() {
+        if (
+            this._element.disabled ||
+            $(this._element).hasClass(ClassName$4.DISABLED) ||
+            $(this._menu).hasClass(ClassName$4.SHOW)
+        ) {
+            return;
+        }
+
+        var relatedTarget = {
+            relatedTarget: this._element,
+        };
+        var showEvent = $.Event(Event$4.SHOW, relatedTarget);
+
+        var parent = Dropdown._getParentFromElement(this._element);
+
+        $(parent).trigger(showEvent);
+
+        if (showEvent.isDefaultPrevented()) {
+            return;
+        }
+
+        $(this._menu).toggleClass(ClassName$4.SHOW);
+        $(parent)
+            .toggleClass(ClassName$4.SHOW)
+            .trigger($.Event(Event$4.SHOWN, relatedTarget));
+    };
+
+    _proto.hide = function hide() {
+        if (
+            this._element.disabled ||
+            $(this._element).hasClass(ClassName$4.DISABLED) ||
+            !$(this._menu).hasClass(ClassName$4.SHOW)
+        ) {
+            return;
+        }
+
+        var relatedTarget = {
+            relatedTarget: this._element,
+        };
+        var hideEvent = $.Event(Event$4.HIDE, relatedTarget);
+
+        var parent = Dropdown._getParentFromElement(this._element);
+
+        $(parent).trigger(hideEvent);
+
+        if (hideEvent.isDefaultPrevented()) {
+            return;
+        }
+
+        $(this._menu).toggleClass(ClassName$4.SHOW);
+        $(parent)
+            .toggleClass(ClassName$4.SHOW)
+            .trigger($.Event(Event$4.HIDDEN, relatedTarget));
+    };
