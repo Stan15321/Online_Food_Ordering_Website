@@ -2995,4 +2995,293 @@ var Modal =
 
         return Modal;
     })();
-    
+    /**
+     * ------------------------------------------------------------------------
+     * Data Api implementation
+     * ------------------------------------------------------------------------
+     */
+
+     $(document).on(
+        Event$5.CLICK_DATA_API,
+        Selector$5.DATA_TOGGLE,
+        function (event) {
+            var _this10 = this;
+
+            var target;
+            var selector = Util.getSelectorFromElement(this);
+
+            if (selector) {
+                target = document.querySelector(selector);
+            }
+
+            var config = $(target).data(DATA_KEY$5)
+                ? "toggle"
+                : _objectSpread({}, $(target).data(), $(this).data());
+
+            if (this.tagName === "A" || this.tagName === "AREA") {
+                event.preventDefault();
+            }
+
+            var $target = $(target).one(Event$5.SHOW, function (showEvent) {
+                if (showEvent.isDefaultPrevented()) {
+                    // Only register focus restorer if modal will actually get shown
+                    return;
+                }
+
+                $target.one(Event$5.HIDDEN, function () {
+                    if ($(_this10).is(":visible")) {
+                        _this10.focus();
+                    }
+                });
+            });
+
+            Modal._jQueryInterface.call($(target), config, this);
+        }
+    );
+    /**
+     * ------------------------------------------------------------------------
+     * jQuery
+     * ------------------------------------------------------------------------
+     */
+
+    $.fn[NAME$5] = Modal._jQueryInterface;
+    $.fn[NAME$5].Constructor = Modal;
+
+    $.fn[NAME$5].noConflict = function () {
+        $.fn[NAME$5] = JQUERY_NO_CONFLICT$5;
+        return Modal._jQueryInterface;
+    };
+
+    /**
+     * --------------------------------------------------------------------------
+     * Bootstrap (v4.3.1): tools/sanitizer.js
+     * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+     * --------------------------------------------------------------------------
+     */
+    var uriAttrs = [
+        "background",
+        "cite",
+        "href",
+        "itemtype",
+        "longdesc",
+        "poster",
+        "src",
+        "xlink:href",
+    ];
+    var ARIA_ATTRIBUTE_PATTERN = /^aria-[\w-]*$/i;
+    var DefaultWhitelist = {
+        // Global attributes allowed on any supplied element below.
+        "*": ["class", "dir", "id", "lang", "role", ARIA_ATTRIBUTE_PATTERN],
+        a: ["target", "href", "title", "rel"],
+        area: [],
+        b: [],
+        br: [],
+        col: [],
+        code: [],
+        div: [],
+        em: [],
+        hr: [],
+        h1: [],
+        h2: [],
+        h3: [],
+        h4: [],
+        h5: [],
+        h6: [],
+        i: [],
+        img: ["src", "alt", "title", "width", "height"],
+        li: [],
+        ol: [],
+        p: [],
+        pre: [],
+        s: [],
+        small: [],
+        span: [],
+        sub: [],
+        sup: [],
+        strong: [],
+        u: [],
+        ul: [],
+        /**
+         * A pattern that recognizes a commonly useful subset of URLs that are safe.
+         *
+         * Shoutout to Angular 7 https://github.com/angular/angular/blob/7.2.4/packages/core/src/sanitization/url_sanitizer.ts
+         */
+    };
+    var SAFE_URL_PATTERN = /^(?:(?:https?|mailto|ftp|tel|file):|[^&:/?#]*(?:[/?#]|$))/gi;
+    /**
+     * A pattern that matches safe data URLs. Only matches image, video and audio types.
+     *
+     * Shoutout to Angular 7 https://github.com/angular/angular/blob/7.2.4/packages/core/src/sanitization/url_sanitizer.ts
+     */
+
+    var DATA_URL_PATTERN = /^data:(?:image\/(?:bmp|gif|jpeg|jpg|png|tiff|webp)|video\/(?:mpeg|mp4|ogg|webm)|audio\/(?:mp3|oga|ogg|opus));base64,[a-z0-9+/]+=*$/i;
+
+    function allowedAttribute(attr, allowedAttributeList) {
+        var attrName = attr.nodeName.toLowerCase();
+
+        if (allowedAttributeList.indexOf(attrName) !== -1) {
+            if (uriAttrs.indexOf(attrName) !== -1) {
+                return Boolean(
+                    attr.nodeValue.match(SAFE_URL_PATTERN) ||
+                        attr.nodeValue.match(DATA_URL_PATTERN)
+                );
+            }
+
+            return true;
+        }
+
+        var regExp = allowedAttributeList.filter(function (attrRegex) {
+            return attrRegex instanceof RegExp;
+        }); // Check if a regular expression validates the attribute.
+
+        for (var i = 0, l = regExp.length; i < l; i++) {
+            if (attrName.match(regExp[i])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    function sanitizeHtml(unsafeHtml, whiteList, sanitizeFn) {
+        if (unsafeHtml.length === 0) {
+            return unsafeHtml;
+        }
+
+        if (sanitizeFn && typeof sanitizeFn === "function") {
+            return sanitizeFn(unsafeHtml);
+        }
+
+        var domParser = new window.DOMParser();
+        var createdDocument = domParser.parseFromString(
+            unsafeHtml,
+            "text/html"
+        );
+        var whitelistKeys = Object.keys(whiteList);
+        var elements = [].slice.call(
+            createdDocument.body.querySelectorAll("*")
+        );
+        var _loop = function _loop(i, len) {
+            var el = elements[i];
+            var elName = el.nodeName.toLowerCase();
+
+            if (whitelistKeys.indexOf(el.nodeName.toLowerCase()) === -1) {
+                el.parentNode.removeChild(el);
+                return "continue";
+            }
+
+            var attributeList = [].slice.call(el.attributes);
+            var whitelistedAttributes = [].concat(
+                whiteList["*"] || [],
+                whiteList[elName] || []
+            );
+            attributeList.forEach(function (attr) {
+                if (!allowedAttribute(attr, whitelistedAttributes)) {
+                    el.removeAttribute(attr.nodeName);
+                }
+            });
+        };
+
+        for (var i = 0, len = elements.length; i < len; i++) {
+            var _ret = _loop(i, len);
+
+            if (_ret === "continue") continue;
+        }
+
+        return createdDocument.body.innerHTML;
+    }
+
+    /**
+     * ------------------------------------------------------------------------
+     * Constants
+     * ------------------------------------------------------------------------
+     */
+
+    var NAME$6 = "tooltip";
+    var VERSION$6 = "4.3.1";
+    var DATA_KEY$6 = "bs.tooltip";
+    var EVENT_KEY$6 = "." + DATA_KEY$6;
+    var JQUERY_NO_CONFLICT$6 = $.fn[NAME$6];
+    var CLASS_PREFIX = "bs-tooltip";
+    var BSCLS_PREFIX_REGEX = new RegExp("(^|\\s)" + CLASS_PREFIX + "\\S+", "g");
+    var DISALLOWED_ATTRIBUTES = ["sanitize", "whiteList", "sanitizeFn"];
+    var DefaultType$4 = {
+        animation: "boolean",
+        template: "string",
+        title: "(string|element|function)",
+        trigger: "string",
+        delay: "(number|object)",
+        html: "boolean",
+        selector: "(string|boolean)",
+        placement: "(string|function)",
+        offset: "(number|string|function)",
+        container: "(string|element|boolean)",
+        fallbackPlacement: "(string|array)",
+        boundary: "(string|element)",
+        sanitize: "boolean",
+        sanitizeFn: "(null|function)",
+        whiteList: "object",
+    };
+    var AttachmentMap$1 = {
+        AUTO: "auto",
+        TOP: "top",
+        RIGHT: "right",
+        BOTTOM: "bottom",
+        LEFT: "left",
+    };
+    var Default$4 = {
+        animation: true,
+        template:
+            '<div class="tooltip" role="tooltip">' +
+            '<div class="arrow"></div>' +
+            '<div class="tooltip-inner"></div></div>',
+        trigger: "hover focus",
+        title: "",
+        delay: 0,
+        html: false,
+        selector: false,
+        placement: "top",
+        offset: 0,
+        container: false,
+        fallbackPlacement: "flip",
+        boundary: "scrollParent",
+        sanitize: true,
+        sanitizeFn: null,
+        whiteList: DefaultWhitelist,
+    };
+    var HoverState = {
+        SHOW: "show",
+        OUT: "out",
+    };
+    var Event$6 = {
+        HIDE: "hide" + EVENT_KEY$6,
+        HIDDEN: "hidden" + EVENT_KEY$6,
+        SHOW: "show" + EVENT_KEY$6,
+        SHOWN: "shown" + EVENT_KEY$6,
+        INSERTED: "inserted" + EVENT_KEY$6,
+        CLICK: "click" + EVENT_KEY$6,
+        FOCUSIN: "focusin" + EVENT_KEY$6,
+        FOCUSOUT: "focusout" + EVENT_KEY$6,
+        MOUSEENTER: "mouseenter" + EVENT_KEY$6,
+        MOUSELEAVE: "mouseleave" + EVENT_KEY$6,
+    };
+    var ClassName$6 = {
+        FADE: "fade",
+        SHOW: "show",
+    };
+    var Selector$6 = {
+        TOOLTIP: ".tooltip",
+        TOOLTIP_INNER: ".tooltip-inner",
+        ARROW: ".arrow",
+    };
+    var Trigger = {
+        HOVER: "hover",
+        FOCUS: "focus",
+        CLICK: "click",
+        MANUAL: "manual",
+        /**
+         * ------------------------------------------------------------------------
+         * Class Definition
+         * ------------------------------------------------------------------------
+         */
+    };
