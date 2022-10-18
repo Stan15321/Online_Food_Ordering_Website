@@ -750,3 +750,433 @@ var Carousel =
         clearInterval(this._interval);
         this._interval = null;
     };
+    _proto.cycle = function cycle(event) {
+        if (!event) {
+            this._isPaused = false;
+        }
+
+        if (this._interval) {
+            clearInterval(this._interval);
+            this._interval = null;
+        }
+
+        if (this._config.interval && !this._isPaused) {
+            this._interval = setInterval(
+                (document.visibilityState
+                    ? this.nextWhenVisible
+                    : this.next
+                ).bind(this),
+                this._config.interval
+            );
+        }
+    };
+
+    _proto.to = function to(index) {
+        var _this = this;
+
+        this._activeElement = this._element.querySelector(
+            Selector$2.ACTIVE_ITEM
+        );
+
+        var activeIndex = this._getItemIndex(this._activeElement);
+
+        if (index > this._items.length - 1 || index < 0) {
+            return;
+        }
+
+        if (this._isSliding) {
+            $(this._element).one(Event$2.SLID, function () {
+                return _this.to(index);
+            });
+            return;
+        }
+
+        if (activeIndex === index) {
+            this.pause();
+            this.cycle();
+            return;
+        }
+
+        var direction =
+            index > activeIndex ? Direction.NEXT : Direction.PREV;
+
+        this._slide(direction, this._items[index]);
+    };
+
+    _proto.dispose = function dispose() {
+        $(this._element).off(EVENT_KEY$2);
+        $.removeData(this._element, DATA_KEY$2);
+        this._items = null;
+        this._config = null;
+        this._element = null;
+        this._interval = null;
+        this._isPaused = null;
+        this._isSliding = null;
+        this._activeElement = null;
+        this._indicatorsElement = null;
+    }; // Private
+
+    _proto._getConfig = function _getConfig(config) {
+        config = _objectSpread({}, Default, config);
+        Util.typeCheckConfig(NAME$2, config, DefaultType);
+        return config;
+    };
+
+    _proto._handleSwipe = function _handleSwipe() {
+        var absDeltax = Math.abs(this.touchDeltaX);
+
+        if (absDeltax <= SWIPE_THRESHOLD) {
+            return;
+        }
+
+        var direction = absDeltax / this.touchDeltaX; // swipe left
+
+        if (direction > 0) {
+            this.prev();
+        } // swipe right
+
+        if (direction < 0) {
+            this.next();
+        }
+    };
+
+    _proto._addEventListeners = function _addEventListeners() {
+        var _this2 = this;
+
+        if (this._config.keyboard) {
+            $(this._element).on(Event$2.KEYDOWN, function (event) {
+                return _this2._keydown(event);
+            });
+        }
+
+        if (this._config.pause === "hover") {
+            $(this._element)
+                .on(Event$2.MOUSEENTER, function (event) {
+                    return _this2.pause(event);
+                })
+                .on(Event$2.MOUSELEAVE, function (event) {
+                    return _this2.cycle(event);
+                });
+        }
+
+        if (this._config.touch) {
+            this._addTouchEventListeners();
+        }
+    };
+    _proto._addTouchEventListeners = function _addTouchEventListeners() {
+        var _this3 = this;
+
+        if (!this._touchSupported) {
+            return;
+        }
+
+        var start = function start(event) {
+            if (
+                _this3._pointerEvent &&
+                PointerType[
+                    event.originalEvent.pointerType.toUpperCase()
+                ]
+            ) {
+                _this3.touchStartX = event.originalEvent.clientX;
+            } else if (!_this3._pointerEvent) {
+                _this3.touchStartX =
+                    event.originalEvent.touches[0].clientX;
+            }
+        };
+
+        var move = function move(event) {
+            // ensure swiping with one touch and not pinching
+            if (
+                event.originalEvent.touches &&
+                event.originalEvent.touches.length > 1
+            ) {
+                _this3.touchDeltaX = 0;
+            } else {
+                _this3.touchDeltaX =
+                    event.originalEvent.touches[0].clientX -
+                    _this3.touchStartX;
+            }
+        };
+
+        var end = function end(event) {
+            if (
+                _this3._pointerEvent &&
+                PointerType[
+                    event.originalEvent.pointerType.toUpperCase()
+                ]
+            ) {
+                _this3.touchDeltaX =
+                    event.originalEvent.clientX - _this3.touchStartX;
+            }
+
+            _this3._handleSwipe();
+
+            if (_this3._config.pause === "hover") {
+                // If it's a touch-enabled device, mouseenter/leave are fired as
+                // part of the mouse compatibility events on first tap - the carousel
+                // would stop cycling until user tapped out of it;
+                // here, we listen for touchend, explicitly pause the carousel
+                // (as if it's the second time we tap on it, mouseenter compat event
+                // is NOT fired) and after a timeout (to allow for mouse compatibility
+                // events to fire) we explicitly restart cycling
+                _this3.pause();
+
+                if (_this3.touchTimeout) {
+                    clearTimeout(_this3.touchTimeout);
+                }
+
+                _this3.touchTimeout = setTimeout(function (event) {
+                    return _this3.cycle(event);
+                }, TOUCHEVENT_COMPAT_WAIT + _this3._config.interval);
+            }
+        };
+
+        $(this._element.querySelectorAll(Selector$2.ITEM_IMG)).on(
+            Event$2.DRAG_START,
+            function (e) {
+                return e.preventDefault();
+            }
+        );
+
+        if (this._pointerEvent) {
+            $(this._element).on(Event$2.POINTERDOWN, function (event) {
+                return start(event);
+            });
+            $(this._element).on(Event$2.POINTERUP, function (event) {
+                return end(event);
+            });
+
+            this._element.classList.add(ClassName$2.POINTER_EVENT);
+        } else {
+            $(this._element).on(Event$2.TOUCHSTART, function (event) {
+                return start(event);
+            });
+            $(this._element).on(Event$2.TOUCHMOVE, function (event) {
+                return move(event);
+            });
+            $(this._element).on(Event$2.TOUCHEND, function (event) {
+                return end(event);
+            });
+        }
+    };
+
+    _proto._keydown = function _keydown(event) {
+        if (/input|textarea/i.test(event.target.tagName)) {
+            return;
+        }
+
+        switch (event.which) {
+            case ARROW_LEFT_KEYCODE:
+                event.preventDefault();
+                this.prev();
+                break;
+
+            case ARROW_RIGHT_KEYCODE:
+                event.preventDefault();
+                this.next();
+                break;
+
+            default:
+        }
+    };
+
+    _proto._getItemIndex = function _getItemIndex(element) {
+        this._items =
+            element && element.parentNode
+                ? [].slice.call(
+                      element.parentNode.querySelectorAll(
+                          Selector$2.ITEM
+                      )
+                  )
+                : [];
+        return this._items.indexOf(element);
+    };
+    _proto._getItemByDirection = function _getItemByDirection(
+        direction,
+        activeElement
+    ) {
+        var isNextDirection = direction === Direction.NEXT;
+        var isPrevDirection = direction === Direction.PREV;
+
+        var activeIndex = this._getItemIndex(activeElement);
+
+        var lastItemIndex = this._items.length - 1;
+        var isGoingToWrap =
+            (isPrevDirection && activeIndex === 0) ||
+            (isNextDirection && activeIndex === lastItemIndex);
+
+        if (isGoingToWrap && !this._config.wrap) {
+            return activeElement;
+        }
+
+        var delta = direction === Direction.PREV ? -1 : 1;
+        var itemIndex = (activeIndex + delta) % this._items.length;
+        return itemIndex === -1
+            ? this._items[this._items.length - 1]
+            : this._items[itemIndex];
+    };
+
+    _proto._triggerSlideEvent = function _triggerSlideEvent(
+        relatedTarget,
+        eventDirectionName
+    ) {
+        var targetIndex = this._getItemIndex(relatedTarget);
+
+        var fromIndex = this._getItemIndex(
+            this._element.querySelector(Selector$2.ACTIVE_ITEM)
+        );
+
+        var slideEvent = $.Event(Event$2.SLIDE, {
+            relatedTarget: relatedTarget,
+            direction: eventDirectionName,
+            from: fromIndex,
+            to: targetIndex,
+        });
+        $(this._element).trigger(slideEvent);
+        return slideEvent;
+    };
+
+    _proto._setActiveIndicatorElement = function _setActiveIndicatorElement(
+        element
+    ) {
+        if (this._indicatorsElement) {
+            var indicators = [].slice.call(
+                this._indicatorsElement.querySelectorAll(
+                    Selector$2.ACTIVE
+                )
+            );
+            $(indicators).removeClass(ClassName$2.ACTIVE);
+
+            var nextIndicator = this._indicatorsElement.children[
+                this._getItemIndex(element)
+            ];
+
+            if (nextIndicator) {
+                $(nextIndicator).addClass(ClassName$2.ACTIVE);
+            }
+        }
+    };
+
+    _proto._slide = function _slide(direction, element) {
+        var _this4 = this;
+
+        var activeElement = this._element.querySelector(
+            Selector$2.ACTIVE_ITEM
+        );
+
+        var activeElementIndex = this._getItemIndex(activeElement);
+
+        var nextElement =
+            element ||
+            (activeElement &&
+                this._getItemByDirection(direction, activeElement));
+
+        var nextElementIndex = this._getItemIndex(nextElement);
+
+        var isCycling = Boolean(this._interval);
+        var directionalClassName;
+        var orderClassName;
+        var eventDirectionName;
+
+        if (direction === Direction.NEXT) {
+            directionalClassName = ClassName$2.LEFT;
+            orderClassName = ClassName$2.NEXT;
+            eventDirectionName = Direction.LEFT;
+        } else {
+            directionalClassName = ClassName$2.RIGHT;
+            orderClassName = ClassName$2.PREV;
+            eventDirectionName = Direction.RIGHT;
+        }
+
+        if (
+            nextElement &&
+            $(nextElement).hasClass(ClassName$2.ACTIVE)
+        ) {
+            this._isSliding = false;
+            return;
+        }
+
+        var slideEvent = this._triggerSlideEvent(
+            nextElement,
+            eventDirectionName
+        );
+
+        if (slideEvent.isDefaultPrevented()) {
+            return;
+        }
+
+        if (!activeElement || !nextElement) {
+            // Some weirdness is happening, so we bail
+            return;
+        }
+
+        this._isSliding = true;
+
+        if (isCycling) {
+            this.pause();
+        }
+
+        this._setActiveIndicatorElement(nextElement);
+
+        var slidEvent = $.Event(Event$2.SLID, {
+            relatedTarget: nextElement,
+            direction: eventDirectionName,
+            from: activeElementIndex,
+            to: nextElementIndex,
+        });
+
+        if ($(this._element).hasClass(ClassName$2.SLIDE)) {
+            $(nextElement).addClass(orderClassName);
+            Util.reflow(nextElement);
+            $(activeElement).addClass(directionalClassName);
+            $(nextElement).addClass(directionalClassName);
+            var nextElementInterval = parseInt(
+                nextElement.getAttribute("data-interval"),
+                10
+            );
+
+            if (nextElementInterval) {
+                this._config.defaultInterval =
+                    this._config.defaultInterval ||
+                    this._config.interval;
+                this._config.interval = nextElementInterval;
+            } else {
+                this._config.interval =
+                    this._config.defaultInterval ||
+                    this._config.interval;
+            }
+
+            var transitionDuration = Util.getTransitionDurationFromElement(
+                activeElement
+            );
+            $(activeElement)
+                .one(Util.TRANSITION_END, function () {
+                    $(nextElement)
+                        .removeClass(
+                            directionalClassName + " " + orderClassName
+                        )
+                        .addClass(ClassName$2.ACTIVE);
+                    $(activeElement).removeClass(
+                        ClassName$2.ACTIVE +
+                            " " +
+                            orderClassName +
+                            " " +
+                            directionalClassName
+                    );
+                    _this4._isSliding = false;
+                    setTimeout(function () {
+                        return $(_this4._element).trigger(slidEvent);
+                    }, 0);
+                })
+                .emulateTransitionEnd(transitionDuration);
+        } else {
+            $(activeElement).removeClass(ClassName$2.ACTIVE);
+            $(nextElement).addClass(ClassName$2.ACTIVE);
+            this._isSliding = false;
+            $(this._element).trigger(slidEvent);
+        }
+
+        if (isCycling) {
+            this.cycle();
+        }
+    }; 
