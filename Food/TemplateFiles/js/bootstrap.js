@@ -2677,3 +2677,322 @@ var Modal =
                     }
                 });
         };
+        _proto._setEscapeEvent = function _setEscapeEvent() {
+            var _this5 = this;
+
+            if (this._isShown && this._config.keyboard) {
+                $(this._element).on(
+                    Event$5.KEYDOWN_DISMISS,
+                    function (event) {
+                        if (event.which === ESCAPE_KEYCODE$1) {
+                            event.preventDefault();
+
+                            _this5.hide();
+                        }
+                    }
+                );
+            } else if (!this._isShown) {
+                $(this._element).off(Event$5.KEYDOWN_DISMISS);
+            }
+        };
+
+        _proto._setResizeEvent = function _setResizeEvent() {
+            var _this6 = this;
+
+            if (this._isShown) {
+                $(window).on(Event$5.RESIZE, function (event) {
+                    return _this6.handleUpdate(event);
+                });
+            } else {
+                $(window).off(Event$5.RESIZE);
+            }
+        };
+
+        _proto._hideModal = function _hideModal() {
+            var _this7 = this;
+
+            this._element.style.display = "none";
+
+            this._element.setAttribute("aria-hidden", true);
+
+            this._element.removeAttribute("aria-modal");
+
+            this._isTransitioning = false;
+
+            this._showBackdrop(function () {
+                $(document.body).removeClass(ClassName$5.OPEN);
+
+                _this7._resetAdjustments();
+
+                _this7._resetScrollbar();
+
+                $(_this7._element).trigger(Event$5.HIDDEN);
+            });
+        };
+
+        _proto._removeBackdrop = function _removeBackdrop() {
+            if (this._backdrop) {
+                $(this._backdrop).remove();
+                this._backdrop = null;
+            }
+        };
+
+        _proto._showBackdrop = function _showBackdrop(callback) {
+            var _this8 = this;
+
+            var animate = $(this._element).hasClass(ClassName$5.FADE)
+                ? ClassName$5.FADE
+                : "";
+
+            if (this._isShown && this._config.backdrop) {
+                this._backdrop = document.createElement("div");
+                this._backdrop.className = ClassName$5.BACKDROP;
+
+                if (animate) {
+                    this._backdrop.classList.add(animate);
+                }
+
+                $(this._backdrop).appendTo(document.body);
+                $(this._element).on(
+                    Event$5.CLICK_DISMISS,
+                    function (event) {
+                        if (_this8._ignoreBackdropClick) {
+                            _this8._ignoreBackdropClick = false;
+                            return;
+                        }
+
+                        if (event.target !== event.currentTarget) {
+                            return;
+                        }
+
+                        if (_this8._config.backdrop === "static") {
+                            _this8._element.focus();
+                        } else {
+                            _this8.hide();
+                        }
+                    }
+                );
+
+                if (animate) {
+                    Util.reflow(this._backdrop);
+                }
+
+                $(this._backdrop).addClass(ClassName$5.SHOW);
+
+                if (!callback) {
+                    return;
+                }
+
+                if (!animate) {
+                    callback();
+                    return;
+                }
+
+                var backdropTransitionDuration = Util.getTransitionDurationFromElement(
+                    this._backdrop
+                );
+                $(this._backdrop)
+                    .one(Util.TRANSITION_END, callback)
+                    .emulateTransitionEnd(backdropTransitionDuration);
+            } else if (!this._isShown && this._backdrop) {
+                $(this._backdrop).removeClass(ClassName$5.SHOW);
+
+                var callbackRemove = function callbackRemove() {
+                    _this8._removeBackdrop();
+
+                    if (callback) {
+                        callback();
+                    }
+                };
+
+                if ($(this._element).hasClass(ClassName$5.FADE)) {
+                    var _backdropTransitionDuration = Util.getTransitionDurationFromElement(
+                        this._backdrop
+                    );
+
+                    $(this._backdrop)
+                        .one(Util.TRANSITION_END, callbackRemove)
+                        .emulateTransitionEnd(_backdropTransitionDuration);
+                } else {
+                    callbackRemove();
+                }
+            } else if (callback) {
+                callback();
+            }
+        }; 
+        _proto._adjustDialog = function _adjustDialog() {
+            var isModalOverflowing =
+                this._element.scrollHeight >
+                document.documentElement.clientHeight;
+
+            if (!this._isBodyOverflowing && isModalOverflowing) {
+                this._element.style.paddingLeft =
+                    this._scrollbarWidth + "px";
+            }
+
+            if (this._isBodyOverflowing && !isModalOverflowing) {
+                this._element.style.paddingRight =
+                    this._scrollbarWidth + "px";
+            }
+        };
+
+        _proto._resetAdjustments = function _resetAdjustments() {
+            this._element.style.paddingLeft = "";
+            this._element.style.paddingRight = "";
+        };
+
+        _proto._checkScrollbar = function _checkScrollbar() {
+            var rect = document.body.getBoundingClientRect();
+            this._isBodyOverflowing =
+                rect.left + rect.right < window.innerWidth;
+            this._scrollbarWidth = this._getScrollbarWidth();
+        };
+
+        _proto._setScrollbar = function _setScrollbar() {
+            var _this9 = this;
+
+            if (this._isBodyOverflowing) {
+                // Note: DOMNode.style.paddingRight returns the actual value or '' if not set
+                //   while $(DOMNode).css('padding-right') returns the calculated value or 0 if not set
+                var fixedContent = [].slice.call(
+                    document.querySelectorAll(Selector$5.FIXED_CONTENT)
+                );
+                var stickyContent = [].slice.call(
+                    document.querySelectorAll(Selector$5.STICKY_CONTENT)
+                ); // Adjust fixed content padding
+
+                $(fixedContent).each(function (index, element) {
+                    var actualPadding = element.style.paddingRight;
+                    var calculatedPadding = $(element).css("padding-right");
+                    $(element)
+                        .data("padding-right", actualPadding)
+                        .css(
+                            "padding-right",
+                            parseFloat(calculatedPadding) +
+                                _this9._scrollbarWidth +
+                                "px"
+                        );
+                }); // Adjust sticky content margin
+
+                $(stickyContent).each(function (index, element) {
+                    var actualMargin = element.style.marginRight;
+                    var calculatedMargin = $(element).css("margin-right");
+                    $(element)
+                        .data("margin-right", actualMargin)
+                        .css(
+                            "margin-right",
+                            parseFloat(calculatedMargin) -
+                                _this9._scrollbarWidth +
+                                "px"
+                        );
+                }); // Adjust body padding
+
+                var actualPadding = document.body.style.paddingRight;
+                var calculatedPadding = $(document.body).css(
+                    "padding-right"
+                );
+                $(document.body)
+                    .data("padding-right", actualPadding)
+                    .css(
+                        "padding-right",
+                        parseFloat(calculatedPadding) +
+                            this._scrollbarWidth +
+                            "px"
+                    );
+            }
+
+            $(document.body).addClass(ClassName$5.OPEN);
+        };
+
+        _proto._resetScrollbar = function _resetScrollbar() {
+            // Restore fixed content padding
+            var fixedContent = [].slice.call(
+                document.querySelectorAll(Selector$5.FIXED_CONTENT)
+            );
+            $(fixedContent).each(function (index, element) {
+                var padding = $(element).data("padding-right");
+                $(element).removeData("padding-right");
+                element.style.paddingRight = padding ? padding : "";
+            }); // Restore sticky content
+
+            var elements = [].slice.call(
+                document.querySelectorAll("" + Selector$5.STICKY_CONTENT)
+            );
+            $(elements).each(function (index, element) {
+                var margin = $(element).data("margin-right");
+
+                if (typeof margin !== "undefined") {
+                    $(element)
+                        .css("margin-right", margin)
+                        .removeData("margin-right");
+                }
+            }); // Restore body padding
+
+            var padding = $(document.body).data("padding-right");
+            $(document.body).removeData("padding-right");
+            document.body.style.paddingRight = padding ? padding : "";
+        };
+
+        _proto._getScrollbarWidth = function _getScrollbarWidth() {
+            // thx d.walsh
+            var scrollDiv = document.createElement("div");
+            scrollDiv.className = ClassName$5.SCROLLBAR_MEASURER;
+            document.body.appendChild(scrollDiv);
+            var scrollbarWidth =
+                scrollDiv.getBoundingClientRect().width -
+                scrollDiv.clientWidth;
+            document.body.removeChild(scrollDiv);
+            return scrollbarWidth;
+        }; // Static
+
+        Modal._jQueryInterface = function _jQueryInterface(
+            config,
+            relatedTarget
+        ) {
+            return this.each(function () {
+                var data = $(this).data(DATA_KEY$5);
+
+                var _config = _objectSpread(
+                    {},
+                    Default$3,
+                    $(this).data(),
+                    typeof config === "object" && config ? config : {}
+                );
+
+                if (!data) {
+                    data = new Modal(this, _config);
+                    $(this).data(DATA_KEY$5, data);
+                }
+
+                if (typeof config === "string") {
+                    if (typeof data[config] === "undefined") {
+                        throw new TypeError(
+                            'No method named "' + config + '"'
+                        );
+                    }
+
+                    data[config](relatedTarget);
+                } else if (_config.show) {
+                    data.show(relatedTarget);
+                }
+            });
+        };
+
+        _createClass(Modal, null, [
+            {
+                key: "VERSION",
+                get: function get() {
+                    return VERSION$5;
+                },
+            },
+            {
+                key: "Default",
+                get: function get() {
+                    return Default$3;
+                },
+            },
+        ]);
+
+        return Modal;
+    })();
+    
