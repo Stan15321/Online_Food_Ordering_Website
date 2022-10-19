@@ -356,3 +356,214 @@ a:focus {
             width: 100%;
         }
     }
+
+    .carousel-indicators {
+        position: unset;
+        margin: 0;
+        justify-content: flex-start;
+        align-items: center;
+
+        li {
+            background-color: $white;
+            width: 12px;
+            height: 12px;
+            border-radius: 100%;
+            opacity: 1;
+
+            &.active {
+                width: 20px;
+                height: 20px;
+                background-color: $primary1;
+            }
+        }
+    }
+}
+
+// end slider section
+
+// offer section
+
+.offer_section {
+    position: relative;
+    padding-top: 45px;
+
+    .box {
+        display: flex;
+        align-items: center;
+        margin-top: 45px;
+        border-radius: 5px;
+        padding: 20px 15px;
+        background-color: $primary2;
+        color: $white;
+
+        .img-box {
+            width: 175px;
+            min-width: 175px;
+            height: 175px;
+            margin-right: 15px;
+            position: relative;
+            transition: all .1.5s;
+            border-radius: 100%;
+            border: 5px solid $primary1;
+            overflow: hidden;
+
+            img {
+                width: 100%;
+                transition: all .2s;
+            }
+        }
+
+        .detail-box {
+
+            h5 {
+                @include second-font();
+                font-size: 24px;
+                margin: 0;
+            }
+
+            h6 {
+                @include second-font();
+                margin: 10px 0;
+
+                span {
+                    font-size: 2.5rem;
+                    font-weight: bold
+                }
+            }
+
+            p {
+            }
+
+            a {
+                @include hero_btn($primary1, $white, 10px, 30px, 45px);
+
+                svg {
+                    width: 20px;
+                    height: auto;
+                    margin-left: 5px;
+                    fill: $white;
+                }
+            }
+        }
+
+        &:hover {
+            .img-box {
+
+                img {
+                    transform: scale(1.1);
+                }
+            }
+        }
+    }
+}
+
+// end offer section
+
+
+// food section
+
+.food_section {
+
+    .filters_menu {
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        list-style-type: none;
+        margin: 45px 0 20px 0;
+
+        li {
+            padding: 7px 25px;
+            cursor: pointer;
+            border-radius: 25px;
+
+            &.active {
+                background-color: $primary2;
+                color: $white;
+            }
+        }
+    }
+
+    .box {
+        position: relative;
+        margin-top: 25px;
+        background-color: $white;
+        border-radius: 10px;
+        color: $white;
+        border-radius: 15px;
+        overflow: hidden;
+        background: linear-gradient(to bottom, #f1f2f3 25px, $primary2 25px);
+
+        .img-box {
+            background: #f1f2f3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 215px;
+            border-radius: 0 0 0 45px;
+            margin: -1px;
+            padding: 25px;
+
+            img {
+                max-width: 100%;
+                max-height: 145px;
+                transition: all .2s;
+            }
+        }
+
+        .detail-box {
+            padding: 25px;
+
+            h5 {
+                font-weight: 600;
+            }
+
+            p {
+                font-size: 15px;
+            }
+
+            h6 {
+                margin-top: 10px;
+            }
+        }
+
+        .options {
+            display: flex;
+            justify-content: space-between;
+
+            a {
+                width: 40px;
+                height: 40px;
+                border-radius: 100%;
+                background: $primary1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                svg {
+                    width: 18px;
+                    height: auto;
+                    fill: $white;
+                }
+            }
+        }
+
+        &:hover {
+            .img-box {
+                img {
+                    transform: scale(1.1);
+                }
+            }
+        }
+    }
+
+    .btn-box {
+        display: flex;
+        justify-content: center;
+        margin-top: 45px;
+
+        a {
+            @include hero_btn($primary1, $white, 10px, 55px, 45px);
+        }
+    }
+}
