@@ -13,10 +13,11 @@ namespace Food.User
         {
             if (!Request.Url.AbsoluteUri.ToString().Contains("Default.aspx"))
             {
-
+                form1.Attributes.Add("class", "sub_page");
             }
             else
             {
+                form1.Attributes.Remove("class");
                 Control sliderUserControler = (Control)Page.LoadControl("SliderUserControl.ascx");
                 pnlSliderUC.Controls.Add(sliderUserControler);
             }
