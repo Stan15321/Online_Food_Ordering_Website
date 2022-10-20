@@ -84,6 +84,8 @@
     <Content Include="TemplateFiles\images\hero-bg.jpg" />
     <Content Include="TemplateFiles\images\o1.jpg" />
     <Content Include="TemplateFiles\images\o2.jpg" />
+    <Content Include="User\About.aspx" />
+    <Content Include="User\Contacts.aspx" />
     <Content Include="User\Default.aspx" />
     <Content Include="User\Menu.aspx" />
     <Content Include="User\SliderUserControl.ascx" />
@@ -94,6 +96,20 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="User\About.aspx.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User\About.aspx.designer.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="User\Contacts.aspx.cs">
+      <DependentUpon>Contacts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User\Contacts.aspx.designer.cs">
+      <DependentUpon>Contacts.aspx</DependentUpon>
+    </Compile>
     <Compile Include="User\Menu.aspx.cs">
       <DependentUpon>Menu.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
