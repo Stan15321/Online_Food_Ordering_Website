@@ -11,7 +11,15 @@ namespace Food.User
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!Request.Url.AbsoluteUri.ToString().Contains("Default.aspx"))
+            {
 
+            }
+            else
+            {
+                Control sliderUserControler = (Control)Page.LoadControl("SliderUserControl.ascx");
+                pnlSliderUC.Controls.Add(sliderUserControler);
+            }
         }
     }
 }
