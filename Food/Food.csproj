@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\customScrollbar.css" />
+    <Content Include="assets\css\style.css" />
     <Content Include="Global.asax" />
     <Content Include="TemplateFiles\images\about-img.png" />
     <Content Include="TemplateFiles\images\client1.jpg" />
