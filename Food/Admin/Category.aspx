@@ -39,7 +39,9 @@
                                                         CssClass="form-check-input" />
                                                 </div>
                                                 <div class="pb-5">
-                                                    <asp:Button ID="btnAddOrUpdate" runat="server" Text="Add" CssClass="btn btn-primary" />
+                                                    <asp:Button ID="btnAddOrUpdate" runat="server" Text="Add" CssClass="btn btn-primary" 
+                                                        OnClick="btnAddOrUpdate_Click"/>
+                                                        
                                                     &nbsp;
                                                     <asp:Button ID="btnClear" runat="server" Text="Clear" CssClass="btn btn-primary"
                                                         CauseValidation="false" />
