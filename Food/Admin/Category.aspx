@@ -38,7 +38,14 @@
                                                     <asp:CheckBox ID="cbIsActuve" runat="server" Text="&nbsp; IsActive"
                                                         CssClass="form-check-input" />
                                                 </div>
+                                                <div class="pb-5">
+                                                    <asp:Button ID="btnAddOrUpdate" runat="server" Text="Add" CssClass="btn btn-primary" />
+                                                    &nbsp;
+                                                    <asp:Button ID="btnClear" runat="server" Text="Clear" CssClass="btn btn-primary"
+                                                        CauseValidation="false" />
+                                                </div>
                                             </div>
+                                            <asp:Image ID="imgCategory" runat="server" CssClass="img-thumbnail" />
                                         </div>
 
                                     </div>
