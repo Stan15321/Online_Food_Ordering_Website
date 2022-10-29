@@ -37,10 +37,15 @@ namespace Food.Admin
             cmd.Parameters.AddWithValue("@IsActive", cbIsActuve.Checked);
             if (fuCategoryImage.HasFile)
             {
-                //if (U)
-                //{
-
-                //}
+                if (Utils.IsValidExtension(fuCategoryImage.FileName))
+                {
+                    Guid obj = Guid.NewGuid();
+                    fileExtension = Path.GetExtension(fuCategoryImage.FileName);
+                    imagePath = "Images/Category/" + obj.ToString() + fileExtension;
+                    fuCategoryImage.PostedFile.SaveAs(Server.MapPath("~/Images/Category/") + obj.ToString() + fileExtension);
+                    cmd.Parameters.AddWithValue("@ImageUrl", imagePath);
+                    isValidExecute = true;
+                }
             }
         }
     }
