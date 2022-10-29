@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Data.SqlClient;
 using System.Web.UI.WebControls;
 using System.Data;
+using System.IO;
 
 namespace Food.Admin
 {
@@ -34,6 +35,13 @@ namespace Food.Admin
             cmd.Parameters.AddWithValue("@CategoryID", categoryID);
             cmd.Parameters.AddWithValue("@Name", txtName.Text.Trim());
             cmd.Parameters.AddWithValue("@IsActive", cbIsActuve.Checked);
+            if (fuCategoryImage.HasFile)
+            {
+                //if (U)
+                //{
+
+                //}
+            }
         }
     }
 }
