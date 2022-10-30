@@ -69,15 +69,29 @@ namespace Food.Admin
                     lblMsg.Visible = true;
                     lblMsg.Text = "Category " + actionName + " successfully!";
                     lblMsg.CssClass = "alert alert-success";
-                    getCategories();
+                    //getCategories();
                     claer();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
-                    throw;
+                    lblMsg.Visible = true;
+                    lblMsg.Text = "Error - " + ex.Message;
+                    lblMsg.CssClass = "alert alert-danger";
+                    
+                }
+                finally
+                {
+                    con.Close();
                 }
             }
+        }
+
+        private void claer()
+        {
+            txtName.Text = string.Empty;
+            cbIsActuve.Checked = false;
+            hdnId.Value = "0";
+            btnAddOrUpdate.Text = "Add";
         }
     }
 }
