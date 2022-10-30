@@ -46,6 +46,37 @@ namespace Food.Admin
                     cmd.Parameters.AddWithValue("@ImageUrl", imagePath);
                     isValidExecute = true;
                 }
+                else
+                {
+                    lblMsg.Visible = true;
+                    lblMsg.Text = "Please, select .jpg, .jpeg or .png image";
+                    lblMsg.CssClass = "alert alert-danger";
+                    isValidExecute = false;
+                }
+            }
+            else
+            {
+                isValidExecute = true;
+            }
+            if (isValidExecute)
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                try
+                {
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    actionName = categoryID == 0 ? "inserted" : "updated";
+                    lblMsg.Visible = true;
+                    lblMsg.Text = "Category " + actionName + " successfully!";
+                    lblMsg.CssClass = "alert alert-success";
+                    getCategories();
+                    claer();
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
             }
         }
     }

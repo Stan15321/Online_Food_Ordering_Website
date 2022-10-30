@@ -271,6 +271,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Images\Category\" />
     <Folder Include="Models\" />
     <Folder Include="TemplateFiles\css\" />
     <Folder Include="TemplateFiles\js\" />

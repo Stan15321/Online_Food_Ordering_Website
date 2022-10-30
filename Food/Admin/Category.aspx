@@ -5,6 +5,10 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <div class="pcoded-inner-content pt-0">
+        <div class="align-align-self-end">
+            <asp:Label ID="lblMsg" runat="server" Visible="false"></asp:Label>
+        </div>
+
         <div class="main-body">
             <div class="page-wrapper">
                 <div class="page-body">
