@@ -87,13 +87,13 @@
 
                                                      <asp:Repeater ID="rCategory" runat="server">
                                                          <HeaderTemplate>
-                                                             <table>
+                                                             <table class="table data-table-export table-hover nowrap">
                                                                  <tr>
-                                                                     <th>Name</th>
+                                                                     <th class="table-plus">Name</th>
                                                                      <th>Image</th>
                                                                      <th>IsActive</th>
                                                                      <th>CreatedDate</th>
-                                                                     <th>Action</th>
+                                                                     <th class="datatable-nosort">Action</th>
                                                                  </tr>
                                                              </table>
                                                          </HeaderTemplate>
