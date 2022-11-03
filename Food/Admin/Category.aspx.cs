@@ -20,7 +20,12 @@ namespace Food.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+                Session["breadCrum"] = "Category";
+                GetCategories();
+            }
+            lblMsg.Visible = false;
         }
         protected void btnAddOrUpdate_Click(object sender, EventArgs e)
         {

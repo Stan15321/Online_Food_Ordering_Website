@@ -95,6 +95,15 @@
                                                                  </tr>
                                                              </table>
                                                          </HeaderTemplate>
+                                                         <ItemTemplate>
+                                                             <tr>
+                                                                 <td><%# Eval("Name") %></td>
+                                                                 <td><%# Eval("ImageUrl") %></td>
+                                                                 <td><%# Eval("IsActive") %></td>
+                                                                 <td><%# Eval("CreatedDate") %></td>
+                                                                 <td></td>
+                                                             </tr>
+                                                         </ItemTemplate>
                                                      </asp:Repeater>
 
                                                  </div>
