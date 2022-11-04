@@ -85,7 +85,8 @@
                                              <div class="card-block table-border-style">
                                                  <div class="table-responsive">
 
-                                                     <asp:Repeater ID="rCategory" runat="server">
+                                                     <asp:Repeater ID="rCategory" runat="server" OnItemCommand="rCategory_ItemCommand"
+                                                         OnItemDataBound="rCategory_ItemDataBound">
                                                          <HeaderTemplate>
                                                              <table class="table data-table-export table-hover nowrap">
                                                                  <thead>
