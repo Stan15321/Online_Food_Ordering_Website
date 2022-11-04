@@ -111,8 +111,9 @@ namespace Food.Admin
             cbIsActuve.Checked = false;
             hdnId.Value = "0";
             btnAddOrUpdate.Text = "Add";
+            imgCategory.ImageUrl = string.Empty;
         }
-        protected void btnClear_Click(object source, RepeaterCommandEventArgs e)
+        protected void btnClear_Click(object sender, EventArgs e)
         {
             claer();
         }
@@ -174,7 +175,20 @@ namespace Food.Admin
 
         protected void rCategory_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                Label lbl = e.Item.FindControl("lblIsActive") as Label;
+                if (lbl.Text == "True")
+                {
+                    lbl.Text = "Active";
+                    lbl.CssClass = "badge badge-success";
+                }
+                else
+                {
+                    lbl.Text = "In-Active";
+                    lbl.CssClass = "badge badge-danger";
+                }
+            }
         }
     }
 }
