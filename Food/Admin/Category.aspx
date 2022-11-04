@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin/Admin.Master" AutoEventWireup="true" CodeBehind="Category.aspx.cs" Inherits="Food.Admin.Category" %>
-
+<%@ Import Namespace="Food" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
@@ -88,6 +88,7 @@
                                                      <asp:Repeater ID="rCategory" runat="server">
                                                          <HeaderTemplate>
                                                              <table class="table data-table-export table-hover nowrap">
+                                                                 <thead>
                                                                  <tr>
                                                                      <th class="table-plus">Name</th>
                                                                      <th>Image</th>
@@ -95,17 +96,24 @@
                                                                      <th>CreatedDate</th>
                                                                      <th class="datatable-nosort">Action</th>
                                                                  </tr>
-                                                             </table>
+                                                             </thead>
+                                                                 <tbody>
                                                          </HeaderTemplate>
                                                          <ItemTemplate>
                                                              <tr>
-                                                                 <td><%#Eval("Name") %></td>
-                                                                 <td><%#Eval("ImageUrl") %></td>
+                                                                 <td class="table-plus"><%#Eval("Name") %></td>
+                                                                 <td>
+                                                                     <img alt="" src="<%# Utils.GetImageUrl( Eval("ImageUrl")) %>" />
+                                                                 </td>
                                                                  <td><%#Eval("IsActive") %></td>
-                                                                 <td><%#Eval("CreatedDate") %></td>
+                                                                 <td><%#Eval("Created Date") %></td>
                                                                  <td></td>
                                                              </tr>
                                                          </ItemTemplate>
+                                                         <FooterTemplate>
+                                                             </tbody>
+                                                             </table>
+                                                         </FooterTemplate>
                                                      </asp:Repeater>
 
                                                  </div>
