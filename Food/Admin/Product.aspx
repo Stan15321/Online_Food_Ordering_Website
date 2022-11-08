@@ -45,20 +45,38 @@
                                     <div class="row">
 
                                         <div class="col-sm-6 col-md-4 col-lg-4">
-                                            <h4 class="sub-title">Category</h4>
+                                            <h4 class="sub-title">Product</h4>
                                             <div>
                                                 <div class="form-group">
-                                                    <label>Category Name</label>
+                                                    <label>Product Name</label>
                                                     <div>
                                                         <asp:TextBox ID="txtName" runat="server" CssClass="form-control"
-                                                            placeholder="Enter Category Name" required></asp:TextBox>
+                                                            placeholder="Enter Product Name" ></asp:TextBox>
+                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
+                                                            ErrorMessage="Name is required" ForeColor="Red" Display="Dynamic"
+                                                            SetFocusOnError="true" ControlToValidate="txtName">
+                                                            </asp:RequiredFieldValidator>
                                                         <asp:HiddenField ID="hdnId" runat="server" Value="0" />
                                                     </div>
                                                 </div>
+
                                                 <div class="form-group">
-                                                    <label>Category Image</label>
+                                                    <label>Product Description</label>
                                                     <div>
-                                                        <asp:FileUpload ID="fuCategoryImage" runat="server" CssClass="form-control"
+                                                        <asp:TextBox ID="txtDescription" runat="server" CssClass="form-control"
+                                                            placeholder="Enter Product Description" TextMode="MultiLine"></asp:TextBox>
+                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" 
+                                                            ErrorMessage="Description is required" ForeColor="Red" Display="Dynamic"
+                                                            SetFocusOnError="true" ControlToValidate="txtDescription">
+                                                            </asp:RequiredFieldValidator>
+                                                        <asp:HiddenField ID="HiddenField1" runat="server" Value="0" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label>Product Image</label>
+                                                    <div>
+                                                        <asp:FileUpload ID="fuProductImage" runat="server" CssClass="form-control"
                                                             onchange="ImagePreview(this);" />
                                                     </div>
                                                 </div>
@@ -75,7 +93,7 @@
                                                         CauseValidation="false" OnClick="btnClear_Click" />
                                                 </div>
                                             </div>
-                                            <asp:Image ID="imgCategory" runat="server" CssClass="img-thumbnail" />
+                                            <asp:Image ID="imgProduct" runat="server" CssClass="img-thumbnail" />
                                         </div>
 
                                          <div class="col-sm-6 col-md-8 col-lg-8 mobile-inputs">
@@ -83,8 +101,8 @@
                                              <div class="card-block table-border-style">
                                                  <div class="table-responsive">
 
-                                                     <asp:Repeater ID="rCategory" runat="server" OnItemCommand="rCategory_ItemCommand"
-                                                         OnItemDataBound="rCategory_ItemDataBound">
+                                                     <asp:Repeater ID="rProduct" runat="server" OnItemCommand="rProduct_ItemCommand"
+                                                         OnItemDataBound="rProduct_ItemDataBound">
                                                          <HeaderTemplate>
                                                              <table class="table data-table-export table-hover nowrap">
                                                                  <thead>

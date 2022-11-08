@@ -19,6 +19,15 @@ namespace Food.Admin
         }
         protected void btnClear_Click(object sender, EventArgs e)
         {
+            
+
+        }
+        protected void rProduct_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+
+        }
+        protected void rProduct_ItemDataBound(object sender, RepeaterCommandEventArgs e)
+        {
 
         }
     }
