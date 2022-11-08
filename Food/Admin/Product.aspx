@@ -69,7 +69,24 @@
                                                             ErrorMessage="Description is required" ForeColor="Red" Display="Dynamic"
                                                             SetFocusOnError="true" ControlToValidate="txtDescription">
                                                             </asp:RequiredFieldValidator>
-                                                        <asp:HiddenField ID="HiddenField1" runat="server" Value="0" />
+                                                        
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label>Product Price($)</label>
+                                                    <div>
+                                                        <asp:TextBox ID="txtPrice" runat="server" CssClass="form-control"
+                                                            placeholder="Enter Product Price" ></asp:TextBox>
+                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" 
+                                                            ErrorMessage="Price is required" ForeColor="Red" Display="Dynamic"
+                                                            SetFocusOnError="true" ControlToValidate="txtPrice">
+                                                            </asp:RequiredFieldValidator>
+                                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" 
+                                                            ErrorMessage="Price must be in decimal" ForeColor="Red" Display="Dynamic"
+                                                            SetFocusOnError="true" ControlToValidate="txtPrice"
+                                                            ValidationExpression="^\d{0.8}(\.\d{1.4})?$">
+                                                        </asp:RegularExpressionValidator>
                                                     </div>
                                                 </div>
 
