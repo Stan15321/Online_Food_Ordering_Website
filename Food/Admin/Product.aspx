@@ -16,7 +16,7 @@
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
                 reader.onload = function (e) {
-                    $('#<%=imgCategory.ClientID%>').prop('src', e.target.result)
+                    $('#<%=imgProduct.ClientID%>').prop('src', e.target.result)
                         .width(200)
                         .height(200);
                 };
@@ -91,12 +91,46 @@
                                                 </div>
 
                                                 <div class="form-group">
+                                                    <label>Product Quantity</label>
+                                                    <div>
+                                                        <asp:TextBox ID="txtQuantity" runat="server" CssClass="form-control"
+                                                            placeholder="Enter Product Quantity" ></asp:TextBox>
+                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" 
+                                                            ErrorMessage="Quantity is required" ForeColor="Red" Display="Dynamic"
+                                                            SetFocusOnError="true" ControlToValidate="txtQuantity">
+                                                            </asp:RequiredFieldValidator>
+                                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" 
+                                                            ErrorMessage="Quantity must be non negative" ForeColor="Red" Display="Dynamic"
+                                                            SetFocusOnError="true" ControlToValidate="txtPrice"
+                                                            ValidationExpression="^([1-9]\d*[0])$">
+                                                        </asp:RegularExpressionValidator>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
                                                     <label>Product Image</label>
                                                     <div>
                                                         <asp:FileUpload ID="fuProductImage" runat="server" CssClass="form-control"
                                                             onchange="ImagePreview(this);" />
                                                     </div>
                                                 </div>
+
+                                                <div class="form-group">
+                                                    <label>Product Category</label>
+                                                    <div>
+                                                        
+                                                        <asp:DropDownList ID="ddlCategorios" runat="server" CssClass="form-control" DataSourceID="SqlDataSource1" DataTextField="Name" DataValueField="CategoryId"
+                                                            >
+                                                            <asp:ListItem Value="0">Select Category</asp:ListItem>
+                                                        </asp:DropDownList>
+                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" 
+                                                            ErrorMessage="Category is required" ForeColor="Red" Display="Dynamic"
+                                                            SetFocusOnError="true" ControlToValidate="ddlCategories" InitialValue="0">
+                                                            </asp:RequiredFieldValidator>
+                                                        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:cs %>" SelectCommand="SELECT [CategoryId], [Name] FROM [Categories]"></asp:SqlDataSource>
+                                                    </div>
+                                                </div>
+
                                                 <div class="form-check pl-4">
                                                     <asp:CheckBox ID="cbIsActuve" runat="server" Text="&nbsp; IsActive"
                                                         CssClass="form-check-input" />
