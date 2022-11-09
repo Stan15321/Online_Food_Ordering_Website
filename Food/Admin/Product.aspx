@@ -160,7 +160,11 @@
                                                                  <tr>
                                                                      <th class="table-plus">Name</th>
                                                                      <th>Image</th>
+                                                                     <th>Price($)</th>
+                                                                     <th>Qty</th>
+                                                                     <th>Category</th>
                                                                      <th>IsActive</th>
+                                                                      <th>Description</th>
                                                                      <th>CreatedDate</th>
                                                                      <th class="datatable-nosort">Action</th>
                                                                  </tr>
