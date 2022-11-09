@@ -120,7 +120,7 @@
                                                     <div>
                                                         
                                                         <asp:DropDownList ID="ddlCategorios" runat="server" CssClass="form-control" DataSourceID="SqlDataSource1" DataTextField="Name" DataValueField="CategoryId"
-                                                            >
+                                                            AppendDataBoundItems="true">
                                                             <asp:ListItem Value="0">Select Category</asp:ListItem>
                                                         </asp:DropDownList>
                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" 

@@ -75,7 +75,7 @@ namespace Food.Admin
                     lblMsg.Text = "Category " + actionName + " successfully!";
                     lblMsg.CssClass = "alert alert-success";
                     GetCategories();
-                    claer();
+                    clear();
                 }
                 catch (Exception ex)
                 {
@@ -105,7 +105,7 @@ namespace Food.Admin
 
         }
 
-        private void claer()
+        private void clear()
         {
             txtName.Text = string.Empty;
             cbIsActuve.Checked = false;
@@ -115,7 +115,7 @@ namespace Food.Admin
         }
         protected void btnClear_Click(object sender, EventArgs e)
         {
-            claer();
+            clear();
         }
 
         protected void rCategory_ItemCommand(object source, RepeaterCommandEventArgs e)
