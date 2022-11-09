@@ -132,13 +132,13 @@ namespace Food.Admin
         protected global::System.Web.UI.WebControls.FileUpload fuProductImage;
 
         /// <summary>
-        /// ddlCategorios control.
+        /// ddlCategories control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCategorios;
+        protected global::System.Web.UI.WebControls.DropDownList ddlCategories;
 
         /// <summary>
         /// RequiredFieldValidator5 control.

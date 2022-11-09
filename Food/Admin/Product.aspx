@@ -85,7 +85,7 @@
                                                         <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" 
                                                             ErrorMessage="Price must be in decimal" ForeColor="Red" Display="Dynamic"
                                                             SetFocusOnError="true" ControlToValidate="txtPrice"
-                                                            ValidationExpression="^\d{0.8}(\.\d{1.4})?$">
+                                                            ValidationExpression="^\d{0,8}(\.\d{1,4})?$">
                                                         </asp:RegularExpressionValidator>
                                                     </div>
                                                 </div>
@@ -102,7 +102,7 @@
                                                         <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" 
                                                             ErrorMessage="Quantity must be non negative" ForeColor="Red" Display="Dynamic"
                                                             SetFocusOnError="true" ControlToValidate="txtPrice"
-                                                            ValidationExpression="^([1-9]\d*[0])$">
+                                                            ValidationExpression="^([1-9]\d*|0)$">
                                                         </asp:RegularExpressionValidator>
                                                     </div>
                                                 </div>
@@ -119,7 +119,7 @@
                                                     <label>Product Category</label>
                                                     <div>
                                                         
-                                                        <asp:DropDownList ID="ddlCategorios" runat="server" CssClass="form-control" DataSourceID="SqlDataSource1" DataTextField="Name" DataValueField="CategoryId"
+                                                        <asp:DropDownList ID="ddlCategories" runat="server" CssClass="form-control" DataSourceID="SqlDataSource1" DataTextField="Name" DataValueField="CategoryId"
                                                             AppendDataBoundItems="true">
                                                             <asp:ListItem Value="0">Select Category</asp:ListItem>
                                                         </asp:DropDownList>

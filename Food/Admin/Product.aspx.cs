@@ -40,7 +40,7 @@ namespace Food.Admin
             cmd.Parameters.AddWithValue("@Description", txtDescription.Text.Trim());
             cmd.Parameters.AddWithValue("@Price", txtPrice.Text.Trim());
             cmd.Parameters.AddWithValue("@Quantity", txtQuantity.Text.Trim());
-            cmd.Parameters.AddWithValue("@CategoryId", ddlCategorios.SelectedValue);
+            cmd.Parameters.AddWithValue("@CategoryId", ddlCategories.SelectedValue);
             cmd.Parameters.AddWithValue("@IsActive", cbIsActuve.Checked);
             if (fuProductImage.HasFile)
             {
@@ -72,9 +72,9 @@ namespace Food.Admin
                 {
                     con.Open();
                     cmd.ExecuteNonQuery();
-                    actionName = categoryID == 0 ? "inserted" : "updated";
+                    actionName = productID == 0 ? "inserted" : "updated";
                     lblMsg.Visible = true;
-                    lblMsg.Text = "Category " + actionName + " successfully!";
+                    lblMsg.Text = "Product " + actionName + " successful!";
                     lblMsg.CssClass = "alert alert-success";
                     GetProducts();
                     clear();
@@ -96,7 +96,7 @@ namespace Food.Admin
         private void GetProducts()
         {
             con = new SqlConnection(Connection.GetConnectionString());
-            cmd = new SqlCommand("Category_Crud", con);
+            cmd = new SqlCommand("Product_Crud", con);
             cmd.Parameters.AddWithValue("@Action", "SELECT");
             cmd.CommandType = CommandType.StoredProcedure;
             sda = new SqlDataAdapter(cmd);
@@ -110,10 +110,14 @@ namespace Food.Admin
         private void clear()
         {
             txtName.Text = string.Empty;
+            txtDescription.Text = string.Empty;
+            txtQuantity.Text = string.Empty;
+            txtPrice.Text = string.Empty;
+            ddlCategories.ClearSelection();
             cbIsActuve.Checked = false;
             hdnId.Value = "0";
             btnAddOrUpdate.Text = "Add";
-            imgCategory.ImageUrl = string.Empty;
+            imgProduct.ImageUrl = string.Empty;
         }
         protected void btnClear_Click(object sender, EventArgs e)
         {
@@ -125,7 +129,7 @@ namespace Food.Admin
         {
 
         }
-        protected void rProduct_ItemDataBound(object sender, RepeaterCommandEventArgs e)
+        protected void rProduct_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
 
         }
