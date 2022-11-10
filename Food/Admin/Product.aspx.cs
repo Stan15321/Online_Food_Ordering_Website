@@ -132,19 +132,23 @@ namespace Food.Admin
             if (e.CommandName == "edit")
             {
                 con = new SqlConnection(Connection.GetConnectionString());
-                cmd = new SqlCommand("Category_Crud", con);
+                cmd = new SqlCommand("Product_Crud", con);
                 cmd.Parameters.AddWithValue("@Action", "GETBYID");
-                cmd.Parameters.AddWithValue("@CategoryId", e.CommandArgument);
+                cmd.Parameters.AddWithValue("@ProductId", e.CommandArgument);
                 cmd.CommandType = CommandType.StoredProcedure;
                 sda = new SqlDataAdapter(cmd);
                 dt = new DataTable();
                 sda.Fill(dt);
                 txtName.Text = dt.Rows[0]["Name"].ToString();
+                txtDescription.Text= dt.Rows[0]["Description"].ToString();
+                txtPrice.Text = dt.Rows[0]["Price"].ToString();
+                txtQuantity.Text = dt.Rows[0]["Quantity"].ToString();
+                ddlCategories.Text = dt.Rows[0]["CategoryId"].ToString();
                 cbIsActuve.Checked = Convert.ToBoolean(dt.Rows[0]["IsActive"]);
                 imgProduct.ImageUrl = string.IsNullOrEmpty(dt.Rows[0]["ImageUrl"].ToString()) ? "../Images/No_image.png" : "../" + dt.Rows[0]["ImageUrl"].ToString();
                 imgProduct.Height = 200;
                 imgProduct.Width = 200;
-                hdnId.Value = dt.Rows[0]["CategoryId"].ToString();
+                hdnId.Value = dt.Rows[0]["ProductId"].ToString();
                 btnAddOrUpdate.Text = "Update";
                 LinkButton btn = e.Item.FindControl("lnkEdit") as LinkButton;
                 btn.CssClass = "badge badge-warning";
@@ -152,9 +156,9 @@ namespace Food.Admin
             else if (e.CommandName == "delete")
             {
                 //con = new SqlConnection(Connection.GetConnectionString());
-                cmd = new SqlCommand("Category_Crud", con);
+                cmd = new SqlCommand("Product_Crud", con);
                 cmd.Parameters.AddWithValue("@Action", "DELETE");
-                cmd.Parameters.AddWithValue("CategoryId", e.CommandArgument);
+                cmd.Parameters.AddWithValue("ProductId", e.CommandArgument);
                 cmd.CommandType = CommandType.StoredProcedure;
                 try
                 {
