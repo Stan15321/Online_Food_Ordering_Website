@@ -127,7 +127,57 @@ namespace Food.Admin
         }
         protected void rProduct_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
+            lblMsg.Visible = false;
+            con = new SqlConnection(Connection.GetConnectionString());
+            if (e.CommandName == "edit")
+            {
+                con = new SqlConnection(Connection.GetConnectionString());
+                cmd = new SqlCommand("Category_Crud", con);
+                cmd.Parameters.AddWithValue("@Action", "GETBYID");
+                cmd.Parameters.AddWithValue("@CategoryId", e.CommandArgument);
+                cmd.CommandType = CommandType.StoredProcedure;
+                sda = new SqlDataAdapter(cmd);
+                dt = new DataTable();
+                sda.Fill(dt);
+                txtName.Text = dt.Rows[0]["Name"].ToString();
+                cbIsActuve.Checked = Convert.ToBoolean(dt.Rows[0]["IsActive"]);
+                imgProduct.ImageUrl = string.IsNullOrEmpty(dt.Rows[0]["ImageUrl"].ToString()) ? "../Images/No_image.png" : "../" + dt.Rows[0]["ImageUrl"].ToString();
+                imgProduct.Height = 200;
+                imgProduct.Width = 200;
+                hdnId.Value = dt.Rows[0]["CategoryId"].ToString();
+                btnAddOrUpdate.Text = "Update";
+                LinkButton btn = e.Item.FindControl("lnkEdit") as LinkButton;
+                btn.CssClass = "badge badge-warning";
+            }
+            else if (e.CommandName == "delete")
+            {
+                //con = new SqlConnection(Connection.GetConnectionString());
+                cmd = new SqlCommand("Category_Crud", con);
+                cmd.Parameters.AddWithValue("@Action", "DELETE");
+                cmd.Parameters.AddWithValue("CategoryId", e.CommandArgument);
+                cmd.CommandType = CommandType.StoredProcedure;
+                try
+                {
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    lblMsg.Visible = true;
+                    lblMsg.Text = "Category deleted successfully!";
+                    lblMsg.CssClass = "alert alert-success";
+                    GetProducts();
+                }
+                catch (Exception ex)
+                {
 
+                    lblMsg.Visible = true;
+                    lblMsg.Text = "Error-" + ex.Message;
+                    lblMsg.CssClass = "alert alert-danger";
+
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
         }
         protected void rProduct_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
