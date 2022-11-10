@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.IO;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Food.Admin
 {
@@ -143,9 +144,10 @@ namespace Food.Admin
                 txtDescription.Text= dt.Rows[0]["Description"].ToString();
                 txtPrice.Text = dt.Rows[0]["Price"].ToString();
                 txtQuantity.Text = dt.Rows[0]["Quantity"].ToString();
-                ddlCategories.Text = dt.Rows[0]["CategoryId"].ToString();
+                ddlCategories.SelectedValue = dt.Rows[0]["CategoryId"].ToString();
                 cbIsActuve.Checked = Convert.ToBoolean(dt.Rows[0]["IsActive"]);
-                imgProduct.ImageUrl = string.IsNullOrEmpty(dt.Rows[0]["ImageUrl"].ToString()) ? "../Images/No_image.png" : "../" + dt.Rows[0]["ImageUrl"].ToString();
+                imgProduct.ImageUrl = string.IsNullOrEmpty(dt.Rows[0]["ImageUrl"].ToString()) ? 
+                    "../Images/No_image.png" : "../" + dt.Rows[0]["ImageUrl"].ToString();
                 imgProduct.Height = 200;
                 imgProduct.Width = 200;
                 hdnId.Value = dt.Rows[0]["ProductId"].ToString();
@@ -155,7 +157,7 @@ namespace Food.Admin
             }
             else if (e.CommandName == "delete")
             {
-                //con = new SqlConnection(Connection.GetConnectionString());
+                
                 cmd = new SqlCommand("Product_Crud", con);
                 cmd.Parameters.AddWithValue("@Action", "DELETE");
                 cmd.Parameters.AddWithValue("ProductId", e.CommandArgument);
@@ -185,7 +187,27 @@ namespace Food.Admin
         }
         protected void rProduct_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                Label lblIsActive = e.Item.FindControl("lblIsActive") as Label;
+                Label lblQuantity = e.Item.FindControl("lblQuantity") as Label;
+                if (lblIsActive.Text == "True")
+                {
+                    lblIsActive.Text = "Active";
+                    lblIsActive.CssClass = "badge badge-success";
+                }
+                else
+                {
+                    lblIsActive.Text = "In-Active";
+                    lblIsActive.CssClass = "badge badge-danger";
+                }
+                if (Convert.ToInt32(lblQuantity.Text) <= 5)
+                {
+                    lblQuantity.CssClass = "badge badge-danger";
+                    lblQuantity.ToolTip = "Item about to be 'Out of stock'!";
+                }
+            }
+            
         }
     }
 }
