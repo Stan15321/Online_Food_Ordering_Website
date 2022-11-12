@@ -33,15 +33,6 @@ namespace Food.User
         protected global::System.Web.UI.WebControls.Label lblHeaderMsg;
 
         /// <summary>
-        /// txtName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtName;
-
-        /// <summary>
         /// rfvName control.
         /// </summary>
         /// <remarks>
@@ -60,13 +51,13 @@ namespace Food.User
         protected global::System.Web.UI.WebControls.RegularExpressionValidator revName;
 
         /// <summary>
-        /// txtUsername control.
+        /// txtName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtUsername;
+        protected global::System.Web.UI.WebControls.TextBox txtName;
 
         /// <summary>
         /// rfvUsername control.
@@ -78,13 +69,13 @@ namespace Food.User
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvUsername;
 
         /// <summary>
-        /// txtEmail control.
+        /// txtUsername control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEmail;
+        protected global::System.Web.UI.WebControls.TextBox txtUsername;
 
         /// <summary>
         /// rfvEmail control.
@@ -96,13 +87,13 @@ namespace Food.User
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvEmail;
 
         /// <summary>
-        /// txtMobile control.
+        /// txtEmail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMobile;
+        protected global::System.Web.UI.WebControls.TextBox txtEmail;
 
         /// <summary>
         /// rfvMobile control.
@@ -123,13 +114,13 @@ namespace Food.User
         protected global::System.Web.UI.WebControls.RegularExpressionValidator revMobile;
 
         /// <summary>
-        /// txtAddress control.
+        /// txtMobile control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtAddress;
+        protected global::System.Web.UI.WebControls.TextBox txtMobile;
 
         /// <summary>
         /// rfvAddress control.
@@ -141,13 +132,13 @@ namespace Food.User
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvAddress;
 
         /// <summary>
-        /// txtPostCode control.
+        /// txtAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPostCode;
+        protected global::System.Web.UI.WebControls.TextBox txtAddress;
 
         /// <summary>
         /// rfvPostCode control.
@@ -168,6 +159,15 @@ namespace Food.User
         protected global::System.Web.UI.WebControls.RegularExpressionValidator revPostCode;
 
         /// <summary>
+        /// txtPostCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPostCode;
+
+        /// <summary>
         /// FuUserImage control.
         /// </summary>
         /// <remarks>
@@ -177,15 +177,6 @@ namespace Food.User
         protected global::System.Web.UI.WebControls.FileUpload FuUserImage;
 
         /// <summary>
-        /// txtPassword control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPassword;
-
-        /// <summary>
         /// rfvPassword control.
         /// </summary>
         /// <remarks>
@@ -193,6 +184,15 @@ namespace Food.User
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPassword;
+
+        /// <summary>
+        /// txtPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPassword;
 
         /// <summary>
         /// btnRegister control.
