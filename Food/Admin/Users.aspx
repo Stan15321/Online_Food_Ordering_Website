@@ -33,7 +33,7 @@
 
                                         
 
-                                         <div class="col-sm-6 col-md-8 col-lg-8 mobile-inputs">
+                                         <div class="col-12 mobile-inputs">
                                             <h4 class="sub-title">Category Lists</h4>
                                              <div class="card-block table-border-style">
                                                  <div class="table-responsive">
