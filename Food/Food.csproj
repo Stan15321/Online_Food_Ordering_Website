@@ -316,6 +316,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Images\Category\" />
     <Folder Include="Images\Product\" />
+    <Folder Include="Images\User\" />
     <Folder Include="Models\" />
     <Folder Include="TemplateFiles\css\" />
     <Folder Include="TemplateFiles\js\" />

@@ -72,13 +72,46 @@ namespace Food.User
                         "registration is successful <b><a href='Login.aspx'>Click here</a></b> to do login" :
                         "details updated successful<b><a href='Profile.aspx'>Can check here</a></b>";
                     lblMsg.Visible = true;
+                    lblMsg.Text = "<b>" + txtUsername.Text.Trim() + "</b>" + actionName;
+                    lblMsg.CssClass = "alert alert-success";
+                    if (userId != 0)
+                    {
+                        Response.AddHeader("REFRESH", "1;URL=Profile.aspx");
+                    }
+                    Clear();
                 }
-                catch (Exception)
+                catch (SqlException ex)
                 {
 
-                    throw;
+                    if (ex.Message.Contains("Violation of UNIQUE KEY constraint"))
+                    {
+                        lblMsg.Visible = true;
+                        lblMsg.Text = "<b>" + txtUsername.Text.Trim() + "</b> username already exists, try new one..!";
+                        lblMsg.CssClass = "alert alert-danger";
+                    }
+                }
+                catch(Exception ex)
+                {
+                    lblMsg.Visible = true;
+                    lblMsg.Text = "Error-" + ex.Message;
+                    lblMsg.CssClass = "alert alert-danger";
+                }
+                finally
+                {
+                    con.Close();
                 }
             }
+        }
+
+        private void Clear()
+        {
+            txtName.Text = string.Empty;
+            txtUsername.Text = string.Empty;
+            txtMobile.Text = string.Empty;
+            txtEmail.Text = string.Empty;
+            txtAddress.Text = string.Empty;
+            txtPostCode.Text = string.Empty;
+            txtPassword.Text = string.Empty;
         }
     }
 }
