@@ -202,7 +202,7 @@
                             <div class="pcoded-navigatio-lavel" data-i18n="nav.category.other">User's List</div>
                             <ul class="pcoded-item pcoded-left-item">
                                 <li>
-                                    <a href="#">
+                                    <a href="Users.aspx">
                                         <span class="pcoded-micon"><i class="ti-direction-alt"></i><b>M</b></span>
                                         <span class="pcoded-mtext" data-i18n="nav.menu-levels.main">Users</span>
                                         <span class="pcoded-mcaret"></span>
