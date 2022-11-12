@@ -66,7 +66,7 @@
                             <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ErrorMessage="Email is required" ControlToValidate="txtEmail"
                                 ForeColor="Red" Display="Dynamic" SetFocusOnError="true"></asp:RequiredFieldValidator>
                             <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" placeholder="Enter Email"
-                                ToolTip="Email"></asp:TextBox>
+                                ToolTip="Email" TextMode="Email"></asp:TextBox>
                         </div>
 
                         <div>
@@ -121,7 +121,8 @@
 
                 <div class="row pl-4">
                     <div class="btn_box">
-                        <asp:Button ID="btnRegister" runat="server" Text="Register" CssClass="btn btn-success rounded-pill pl-4 pr-4 tex-white" />
+                        <asp:Button ID="btnRegister" runat="server" Text="Register" CssClass="btn btn-success rounded-pill pl-4 pr-4 tex-white" 
+                            OnClick="btnRegister_Click"/>
 
                         <asp:Label ID="lblAlreadyUser" runat="server" CssClass="pl-3 text-black-100"
                             Text="Already registered? <a href='Login.aspx' class='badge badge-info'>Login here..</a>">
