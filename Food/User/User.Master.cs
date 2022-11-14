@@ -22,5 +22,18 @@ namespace Food.User
                 pnlSliderUC.Controls.Add(sliderUserControler);
             }
         }
+
+        protected void lbLoginOrLogout_Click(object sender, EventArgs e)
+        {
+            if (Session["userId"] == null)
+            {
+                Response.Redirect("Login.aspx");
+            }
+            else
+            {
+                Session.Abandon();
+                Response.Redirect("Login.aspx");
+            }
+        }
     }
 }
