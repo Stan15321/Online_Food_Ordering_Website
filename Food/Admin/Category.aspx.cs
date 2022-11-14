@@ -23,7 +23,14 @@ namespace Food.Admin
             if (!IsPostBack)
             {
                 Session["breadCrum"] = "Category";
-                GetCategories();
+                if (Session["admin"] == null)
+                {
+                    Response.Redirect("../User/Login.aspx");
+                }
+                else
+                {
+                    GetCategories();
+                }
             }
             lblMsg.Visible = false;
         }

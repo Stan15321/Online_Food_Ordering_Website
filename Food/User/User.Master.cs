@@ -21,6 +21,16 @@ namespace Food.User
                 Control sliderUserControler = (Control)Page.LoadControl("SliderUserControl.ascx");
                 pnlSliderUC.Controls.Add(sliderUserControler);
             }
+
+            if (Session["userId"] != null)
+            {
+                lbLoginOrLogout.Text = "Logout";
+
+            }
+            else
+            {
+                lbLoginOrLogout.Text = "Login";
+            }
         }
 
         protected void lbLoginOrLogout_Click(object sender, EventArgs e)
