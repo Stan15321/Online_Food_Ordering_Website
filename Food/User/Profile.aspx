@@ -23,11 +23,25 @@
                                     <img src="<%= Utils.GetImageUrl(imageUrl); %>" id="imgProfile" style="width:150px; height:150px;"
                                         class="img-thumbnail" />
                                     <div class="middle pt-2">
-                                        <a href="Registration.aspx?id=<%Response.Write(Session["userId"]); %>" class="btn btn-warning">
+                                        <a href="Registration.aspx?id=<%Response.Write(Session["userId"]);%>" class="btn btn-warning">
                                             <i class="fa fa-pencil"></i>Edit Details
                                         </a>
                                     </div>
                                 </div>
+
+                                <div class="userData ml-3">
+                                    <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">
+                                        <a href="javascript:void(0);"><%Response.Write(Session["name"]); %></a>
+                                    </h2>
+                                    <h6 class="d-block">
+                                        <a href="javascript:void(0);">
+                                            <asp:Label ID="lblUsername" runat="server" ToolTip="Unique Username">
+                                                @<%Response.Write(Session["username"]); %>
+                                            </asp:Label>
+                                        </a>
+                                    </h6>
+                                </div>
+
                             </div>
                         </div>
                     </div>
