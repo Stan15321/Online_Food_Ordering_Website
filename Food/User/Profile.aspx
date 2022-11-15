@@ -58,6 +58,19 @@
 
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active text-info" id="basicInfo-tab" data-toggle="tab" href="#basicInfo" role="tab"
+                                           aria-controls="basicInfo" aria-selected="true"><i class="fa fa-id-badge mr-2"></i>Basic Info</a>
+                                    </li>
+                                    <li class=""
+                                </ul>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
