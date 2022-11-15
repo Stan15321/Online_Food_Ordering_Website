@@ -66,8 +66,26 @@
                                         <a class="nav-link active text-info" id="basicInfo-tab" data-toggle="tab" href="#basicInfo" role="tab"
                                            aria-controls="basicInfo" aria-selected="true"><i class="fa fa-id-badge mr-2"></i>Basic Info</a>
                                     </li>
-                                    <li class=""
+                                    <li class="nav-item">
+                                        <a class="nav-link text-info" id="connectedServices-tab" data-toggle="tab" href="#basicInfo" role="tab"
+                                            aria-controls="connectedServices" aria-selected="false">
+                                            <i class="fa fa-clock-o mr-2"></i>Purchased History</a>
+                                    </li>
                                 </ul>
+
+                                <div class="tab-content ml-1" id="myTabContent">
+                                   <%-- Basic User Info--%>
+                                    <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
+                                        <asp:Repeater ID="rUserProfile" runat="server">
+                                            <ItemTemplate>
+
+
+
+                                            </ItemTemplate>
+                                        </asp:Repeater>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
 
