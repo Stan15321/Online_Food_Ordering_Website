@@ -40,6 +40,20 @@
                                             </asp:Label>
                                         </a>
                                     </h6>
+                                    <h6 class="d-block">
+                                        <a href="javascript:void(0)">
+                                            <asp:Label ID="lblEmail" runat="server" ToolTip="User Email">
+                                                <%Response.Write(Session["email"]); %>
+                                            </asp:Label>
+                                        </a>
+                                    </h6>
+                                    <h6 class="d-block">
+                                        <a href="javascript:void(0)">
+                                            <asp:Label ID="lblCreatedDate" runat="server" ToolTip="Account Created On">
+                                                <%Response.Write(Session["createdDate"]); %>
+                                            </asp:Label>
+                                        </a>
+                                    </h6>
                                 </div>
 
                             </div>
