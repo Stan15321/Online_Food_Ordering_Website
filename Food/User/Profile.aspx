@@ -84,7 +84,7 @@
                                                         <label style="font-weight: bold;">Full Name</label>
                                                     </div>
                                                     <div class="col-md-8 col-6">
-                                                        <% Eval("Name"); %>
+                                                        <%# Eval("Name") %>
                                                     </div>
                                                 </div>
                                                 <hr />
@@ -93,7 +93,7 @@
                                                         <label style="font-weight: bold;">Username</label>
                                                     </div>
                                                     <div class="col-md-8 col-6">
-                                                        @<% Eval("Username"); %>
+                                                        @<%# Eval("Username") %>
                                                     </div>
                                                 </div>
                                                 <hr />
@@ -102,13 +102,19 @@
                                                         <label style="font-weight:bold;">Mobile No.</label>
                                                     </div>
                                                     <div class="col-md-8 col-6">
-                                                        <% Eval("Mobile"); %>
+                                                        <%# Eval("Mobile") %>
                                                     </div>
                                                 </div>
                                                 <hr />
                                                 <div class="row">
-
+                                                    <div class="col-sm-3 col-md-2 col-5">
+                                                        <label style="font-weight: bold;">Email Addr.</label>
+                                                    </div>
+                                                    <div class="col-md-8 col-6">
+                                                        <%# Eval("Email") %>
+                                                    </div>
                                                 </div>
+                                                <hr />
 
                                             </ItemTemplate>
                                         </asp:Repeater>
