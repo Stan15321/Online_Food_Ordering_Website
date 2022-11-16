@@ -79,7 +79,36 @@
                                         <asp:Repeater ID="rUserProfile" runat="server">
                                             <ItemTemplate>
 
+                                                <div class="row">
+                                                    <div class="col-sm-3 col-md-2 col-5">
+                                                        <label style="font-weight: bold;">Full Name</label>
+                                                    </div>
+                                                    <div class="col-md-8 col-6">
+                                                        <% Eval("Name"); %>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="col-sm-3 col-md-2 col-5">
+                                                        <label style="font-weight: bold;">Username</label>
+                                                    </div>
+                                                    <div class="col-md-8 col-6">
+                                                        @<% Eval("Username"); %>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="col-sm-3 col-md-2 col-5">
+                                                        <label style="font-weight:bold;">Mobile No.</label>
+                                                    </div>
+                                                    <div class="col-md-8 col-6">
+                                                        <% Eval("Mobile"); %>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="row">
 
+                                                </div>
 
                                             </ItemTemplate>
                                         </asp:Repeater>
