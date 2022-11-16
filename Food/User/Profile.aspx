@@ -115,10 +115,33 @@
                                                     </div>
                                                 </div>
                                                 <hr />
+                                                <div class="row">
+                                                    <div class="col-sm-3 col-md-2 col-5">
+                                                        <label style="font-weight: bold;">Post Code</label>
+                                                    </div>
+                                                    <div class="col-md-8 col-6">
+                                                        <%# Eval("PostCode") %>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="col-sm-3 col-md-2 col-5">
+                                                        <label style="font-weight: bold;">Address</label>
+                                                    </div>
+                                                    <div class="col-md-8 col-6">
+                                                        <%# Eval("Address") %>
+                                                    </div>
+                                                </div>
+                                                <hr />
 
                                             </ItemTemplate>
                                         </asp:Repeater>
                                     </div>
+                                   <%-- Order History Starts--%>
+                                    <div class="tab-pane fade" id="connectedServices" role="tabpanel" aria-labelledby="ConnectedServices-tab">
+
+                                    </div>
+                                    <%--Order History Ends--%>
                                 </div>
 
                             </div>
