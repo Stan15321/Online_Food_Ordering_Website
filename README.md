@@ -2,7 +2,7 @@
 
 
 Website using ASP.Net C# & SQL Server
-## Still in progress
+## Still working on this project
 -Adding Default page
 
 
