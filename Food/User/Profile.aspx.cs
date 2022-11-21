@@ -42,6 +42,7 @@ namespace Food.User
             sda.Fill(dt);
             rUserProfile.DataSource = dt;
             rUserProfile.DataBind();
+            
             if (dt.Rows.Count == 1)
             {
                 Session["name"] = dt.Rows[0]["Name"].ToString();

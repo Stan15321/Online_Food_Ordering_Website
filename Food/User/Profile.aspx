@@ -67,8 +67,8 @@
                                            aria-controls="basicInfo" aria-selected="true"><i class="fa fa-id-badge mr-2"></i>Basic Info</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link text-info" id="connectedServices-tab" data-toggle="tab" href="#basicInfo" role="tab"
-                                            aria-controls="connectedServices" aria-selected="false">
+                                        <a class="nav-link text-info" id="connectedServices-tab" data-toggle="tab" href="#connectedServices" 
+                                            role="tab" aria-controls="connectedServices" aria-selected="false">
                                             <i class="fa fa-clock-o mr-2"></i>Purchased History</a>
                                     </li>
                                 </ul>
@@ -137,6 +137,8 @@
                                             </ItemTemplate>
                                         </asp:Repeater>
                                     </div>
+                                    <%-- Basic User Info Ends --%>
+
                                    <%-- Order History Starts--%>
                                     <div class="tab-pane fade" id="connectedServices" role="tabpanel" aria-labelledby="ConnectedServices-tab">
                                         <h3>Order History</h3>
