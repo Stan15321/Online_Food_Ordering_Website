@@ -139,7 +139,7 @@
                                     </div>
                                    <%-- Order History Starts--%>
                                     <div class="tab-pane fade" id="connectedServices" role="tabpanel" aria-labelledby="ConnectedServices-tab">
-
+                                        <h3>Order History</h3>
                                     </div>
                                     <%--Order History Ends--%>
                                 </div>
