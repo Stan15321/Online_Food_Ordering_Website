@@ -13,17 +13,19 @@
 
             <ul class="filters_menu">
                 <li class="active" data-filter="*">All</li>
-                <li data-filter=".burger">Burger</li>
-                <li data-filter=".pizza">Pizza</li>
-                <li data-filter=".pasta">Pasta</li>
-                <li data-filter=".fries">Fries</li>
+                <asp:Repeater ID="rCategory" runat="server">
+                    <ItemTemplate>
+                <li data-filter=".<%# Eval("Name").ToString().ToLower() %>"><%# Eval("Name") %></li>
+                    </ItemTemplate>
+                </asp:Repeater>
+                
             </ul>
 
             <div class="filters-content">
                 <div class="row grid">
                     <asp:Repeater ID="rProducts" runat="server">
                         <ItemTemplate>
-                            <div class="col-sm-6 col-lg-4 all pizza">
+                            <div class="col-sm-6 col-lg-4 all <%# Eval("Name").ToString().ToLower() %>">
                                 <div class="box">
                                     <div>
                                         <div class="img-box">
@@ -102,10 +104,10 @@
 
                 </div>
             </div>
-            <div class="btn-box">
+           <%-- <div class="btn-box">
                 <a href="">View More
                 </a>
-            </div>
+            </div>--%>
         </div>
     </section>
 

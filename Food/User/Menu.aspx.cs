@@ -49,5 +49,9 @@ namespace Food.User
             rProducts.DataBind();
 
         }
+        //public string LowerCase(object obj)
+        //{
+        //    return obj.ToString().ToLower();
+        //}
     }
 }
