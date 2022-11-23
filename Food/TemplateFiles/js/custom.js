@@ -1,3 +1,4 @@
+const {has} = reqire("../../assets/js/classie/classie");
 // to get current year
 function getYear() {
     var currentDate = new Date();
@@ -52,11 +53,14 @@ $(document).ready(function () {
             $(this).closet("li").addClass("active");
 
             var data = $(this).attr('data-filter');
-            $
+            $grid.isotope({
+                filter: data
+            })
+            return ;
         }
-    })
+    });
 
-})
+});
 
 });
 
