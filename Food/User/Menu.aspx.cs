@@ -60,6 +60,32 @@ namespace Food.User
                 if (i == 0)
                 {
                     //adding new item in cart
+
+                    con = new SqlConnection(Connection.GetConnectionString());
+                    cmd = new SqlCommand("Cart_Crud", con);
+                    cmd.Parameters.AddWithValue("@Action", "INSERT");
+                    cmd.Parameters.AddWithValue("@ProductId", e.CommandArgument);
+                    cmd.Parameters.AddWithValue("@Quantity", 1);
+                    cmd.Parameters.AddWithValue("@UserId", Session["userId"]);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    try
+                    {
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+
+                        Response.Write("<script>alert('Error - " + ex.Message + " ');<script>");
+                    }
+                    finally
+                    {
+                        con.Close();
+                    }
+                }
+                else
+                {
+
                 }
             }
             else
