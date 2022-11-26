@@ -53,7 +53,24 @@ namespace Food.User
 
         protected void rProducts_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
+            if (Session["userId"] != null)
+            {
 
+            }
+            else
+            {
+                Response.Redirect("Login.aspx");
+            }
+        }
+        int isItemExistInCart(int productId)
+        {
+            con = new SqlConnection(Connection.GetConnectionString());
+            cmd = new SqlCommand("Cart_Crud", con);
+            cmd.Parameters.AddWithValue("@Action", "ACTIVEPROD");
+            cmd.CommandType = CommandType.StoredProcedure;
+            sda = new SqlDataAdapter(cmd);
+            dt = new DataTable();
+            sda.Fill(dt);
         }
         //public string LowerCase(object obj)
         //{
