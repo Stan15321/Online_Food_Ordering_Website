@@ -50,6 +50,11 @@ namespace Food.User
             rProducts.DataBind();
 
         }
+
+        protected void rProducts_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+
+        }
         //public string LowerCase(object obj)
         //{
         //    return obj.ToString().ToLower();
