@@ -7,8 +7,10 @@
     <section class="food_section layout_padding">
         <div class="container">
             <div class="heading_container heading_center">
-                <h2>Our Menu
-                </h2>
+                <div class="align-self-end">
+                    <asp:Label ID="lblMsg" runat="server" Visible="false"></asp:Label>
+                </div>
+                <h2>Our Menu</h2>
             </div>
 
             <ul class="filters_menu">
