@@ -12,6 +12,15 @@
                    <h2>Your Shopping Cart</h2>
             </div>
         </div>
+        <div class="container">
+            <asp:Repeater ID="rCartItem" runat="server" onItemCommand="rCartItem_ItemCommand" onItemDataBound="rCartItem_ItemDataBound">
+                <HeaderTemplate>
+                    <table>
+
+                    </table>
+                </HeaderTemplate>
+            </asp:Repeater>
+        </div>
     </section>
 
 

@@ -13,5 +13,15 @@ namespace Food.User
         {
 
         }
+
+        protected void rCartItem_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+
+        }
+
+        protected void rCartItem_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+
+        }
     }
 }
