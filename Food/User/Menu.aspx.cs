@@ -76,7 +76,7 @@ namespace Food.User
                     catch (Exception ex)
                     {
 
-                        Response.Write("<script>alert('Error - " + ex.Message + " ');<script>");
+                        Response.Write("<script>alert('Error - " + ex.Message+ " ');<script>");
                     }
                     finally
                     {
@@ -87,13 +87,13 @@ namespace Food.User
                 {
                     //Adding existing item into cart
                     Utils utils= new Utils();
-                    isCartItemUpdated = utils.UpdateCartQuantity(i +1, Convert.ToInt32(e.CommandArgument), 
+                    isCartItemUpdated = utils.UpdateCartQuantity(i + 1, Convert.ToInt32(e.CommandArgument), 
                         Convert.ToInt32(Session["userId"]));
-                    lblMsg.Visible = true;
-                    lblMsg.Text = "Item added successfully in your cart!";
-                    lblMsg.CssClass = "alert alert-success";
-                    Response.AddHeader("REFRESH", "1;URL=Cart.aspx") ;
                 }
+                lblMsg.Visible = true;
+                lblMsg.Text = "Item added successfully in your cart!";
+                lblMsg.CssClass = "alert alert-success";
+                Response.AddHeader("REFRESH", "1;URL=Cart.aspx");
             }
             else
             {

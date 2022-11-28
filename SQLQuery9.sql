@@ -1,0 +1,3 @@
+USE Food
+
+SELECT * FROM Carts
