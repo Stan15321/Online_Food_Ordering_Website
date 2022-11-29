@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/User/User.Master" AutoEventWireup="true" CodeBehind="Cart.aspx.cs" Inherits="Food.User.Cart" %>
+<%@ Import Namespace="Food" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" runat="server">
@@ -16,11 +17,41 @@
             <asp:Repeater ID="rCartItem" runat="server" onItemCommand="rCartItem_ItemCommand" onItemDataBound="rCartItem_ItemDataBound">
                 <HeaderTemplate>
                     <table>
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Image</th>
+                            <th>Unit Price</th>
+                            <th>Quantity</th>
+                            <th>Total Price</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
 
-                    </table>
+                       
                 </HeaderTemplate>
+                <ItemTemplate>
+                    <tr>
+                        <td>
+                            <asp:Label ID="lblName" runat="server" Text='<%# Eval("Name") %>'></asp:Label>
+                        </td>
+                        <td>
+                            <img width="60" src="<%# Utils.GetImageUrl("ImageUrl") %>" alt="" />
+                        </td>
+                        <td>
+                            $<<asp:Label ID="lblPrice" runat="server" Text='<%# Eval("Price") %>'></asp:Label>
+                        </td>
+                    </tr>
+                </ItemTemplate>
+                    <FooterTemplate>
+                        </tbody>
+                    </table>
+                    </FooterTemplate>
+
             </asp:Repeater>
         </div>
+
     </section>
 
 
