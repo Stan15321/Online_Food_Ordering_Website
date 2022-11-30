@@ -79,6 +79,21 @@
                             <td>$<% Response.Write(Session["grandTotalPrice"]); %></td>
                             <td></td>
                         </tr>
+                        <tr>
+                            <td colspan="2" class="contnue__btn">
+                                <a href="Menu.aspx" class="btn btn-info"><i class="fa fa-arrow-circle-left mr-2">Continue Shopping</i></a>
+                            </td>
+                            <td>
+                                <asp:LinkButton ID="lblUpdateCart" runat="server" CommandName="updateCart" CssClass="btn btn-warning">
+                                    <i class="fa fa-refresh mr-2"></i>Update Cart
+                                </asp:LinkButton>
+                            </td>
+                            <td>
+                                <asp:LinkButton ID="lbCheckout" runat="server" CommandName="checkout" CssClass="btn btn-success">
+                                    Checkout<i class="fa fa-arrow-circle-right mr-2"></i>
+                                </asp:LinkButton>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                     </FooterTemplate>
