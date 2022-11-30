@@ -16,7 +16,7 @@
         <div class="container">
             <asp:Repeater ID="rCartItem" runat="server" onItemCommand="rCartItem_ItemCommand" onItemDataBound="rCartItem_ItemDataBound">
                 <HeaderTemplate>
-                    <table>
+                    <table class="table">
                         <thead>
                         <tr>
                             <th>Name</th>
@@ -37,10 +37,9 @@
                             <asp:Label ID="lblName" runat="server" Text='<%# Eval("Name") %>'></asp:Label>
                         </td>
                         <td>
-                            <img width="60" src="<%# Utils.GetImageUrl("ImageUrl") %>" alt="" />
+                            <img width="60" src="<%# Utils.GetImageUrl(Eval("ImageUrl")) %>" alt="" />
                         </td>
-                        <td>
-                            $<<asp:Label ID="lblPrice" runat="server" Text='<%# Eval("Price") %>'></asp:Label>
+                        <td>$<<asp:Label ID="lblPrice" runat="server" Text='<%# Eval("Price") %>'></asp:Label>
                             <asp:HiddenField ID="hdnProductId" runat="server" Value='<%# Eval("ProductId") %>' />
                             <asp:HiddenField ID="hdnQuantity" runat="server" Value='<%# Eval("Qty") %>'/>
                             <asp:HiddenField ID="hdnPrdQuantity" runat="server" Value='<%# Eval("PrdQty") %>' />
@@ -59,8 +58,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td>
-                            $<<asp:Label ID="lblTotalPrice" runat="server"></asp:Label>
+                        <td>$<<asp:Label ID="lblTotalPrice" runat="server"></asp:Label>
                         </td>
                         <td>
                             <asp:LinkButton ID="lbDelete" runat="server" Text="Remove" CommandName="remove" 
@@ -81,7 +79,7 @@
                         </tr>
                         <tr>
                             <td colspan="2" class="contnue__btn">
-                                <a href="Menu.aspx" class="btn btn-info"><i class="fa fa-arrow-circle-left mr-2">Continue Shopping</i></a>
+                                <a href="Menu.aspx" class="btn btn-info"><i class="fa fa-arrow-circle-left mr-2"></i>Continue Shopping</a>
                             </td>
                             <td>
                                 <asp:LinkButton ID="lblUpdateCart" runat="server" CommandName="updateCart" CssClass="btn btn-warning">
@@ -90,7 +88,7 @@
                             </td>
                             <td>
                                 <asp:LinkButton ID="lbCheckout" runat="server" CommandName="checkout" CssClass="btn btn-success">
-                                    Checkout<i class="fa fa-arrow-circle-right mr-2"></i>
+                                    Checkout<i class="fa fa-arrow-circle-right ml-2"></i>
                                 </asp:LinkButton>
                             </td>
                         </tr>

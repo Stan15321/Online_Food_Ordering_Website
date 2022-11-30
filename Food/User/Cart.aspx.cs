@@ -57,7 +57,10 @@ namespace Food.User
 
         protected void rCartItem_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
 
+            }
         }
         private sealed class CustomTemplate : ITemplate
         {
