@@ -1,7 +1,7 @@
 ## Online Food Ordering Website
 
 
-Website using ASP.Net C# & SQL Server
+Website using ASP.Net C# and SQL Server
 ## Still working on this project
 -Adding Default page
 
