@@ -1,4 +1,4 @@
-const {has} = reqire("../../assets/js/classie/classie");
+//const {has} = reqire("../../assets/js/classie/classie");
 // to get current year
 function getYear() {
     var currentDate = new Date();
@@ -103,3 +103,30 @@ $(".client_owl-carousel").owlCarousel({
         }
     }
 });
+
+//'use strict';
+(function($) {
+    //quantity change
+    var proQty = $('.pro-qty');
+    proQty.prepend('<span class="dec qtybtn">-</span>');
+    proQty.append('<span class="inc qtybtn">+</span>');
+    proQty.on('click', 'qtybtn', function() {
+        var $button = $(this);
+        var oldValue = $button.parent().find('input').val();
+        if($button.hasClass('inc')) {
+        if(oldValue >= 10) {
+            var newVal = parseFloat(oldValue);
+        } else {
+            newVal = parseFloat(oldValue) + 1;
+        }
+      }else{
+        if(oldValue > 1){
+            var newVal = parseFloat(oldValue) - 1;
+        }else{
+            newVal = 1;
+        }
+      }
+      $button.parent().find('input').val(newVal);
+    });
+})(jQuery)
+//For Quantity change
