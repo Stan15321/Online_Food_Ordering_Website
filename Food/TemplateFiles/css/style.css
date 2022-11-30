@@ -6,6 +6,45 @@ body {
   overflow-x: hidden;
 }
 
+.product__details__options {
+  overflow: hidden;
+  
+}
+.product__details__options .quantity {
+  overflow: hidden;
+  margin-right: 20px;
+}
+.product__details__options .pro-qty {
+  height: 50px;
+  width: 140px;
+  border: 1px solid #ffbe33;
+  padding: 0 20px;
+}
+.product__details__options .pro-qty .qtybtn {
+  font-size: 16px;
+  float: left;
+  height: 100%;
+  line-height: 48px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.product__details__options .pro-qty .qtybtn.dec {
+  color: #888888;
+}
+.product__details__options .pro-qty .qtybtn.inc {
+  color: #111111;
+}
+.product__details__options .pro-qty input {
+  border: none;
+  height: 100%;
+  width: 72px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111111;
+  float: left;
+  text-align: center;
+}
+
 .layout_padding {
   padding: 90px 0;
 }
