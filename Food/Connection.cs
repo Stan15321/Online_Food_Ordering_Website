@@ -79,7 +79,7 @@ namespace Food
             }
             return isUpdated;
         }
-        public int CartCount(int userId)
+        public int cartCount(int userId)
         {
             con = new SqlConnection(Connection.GetConnectionString());
             cmd = new SqlCommand("Cart_Crud", con);

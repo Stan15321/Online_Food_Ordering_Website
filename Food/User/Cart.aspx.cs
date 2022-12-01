@@ -67,7 +67,7 @@ namespace Food.User
                     cmd.ExecuteNonQuery();
                     GetCartItems();
                     //cart count
-                    Session["cartCount"] = utils.CartCount(Convert.ToInt32(Session["userId"]));
+                    Session["cartCount"] = utils.cartCount(Convert.ToInt32(Session["userId"]));
                     
                 }
                 catch (Exception ex)
@@ -79,7 +79,43 @@ namespace Food.User
                 {
                     con.Close();
                 }
+
+
             }
+            if (e.CommandName == "updateCart")
+            {
+                bool isCartUpdated = false;
+                for(int item = 0; item < rCartItem.Items.Count; item++)
+                {
+                    if (rCartItem.Items[item].ItemType == ListItemType.Item || rCartItem.Items[item].ItemType == ListItemType.AlternatingItem)
+                    {
+                        TextBox quantity = rCartItem.Items[item].FindControl("txtQuantity") as TextBox;
+                        HiddenField _productId = rCartItem.Items[item].FindControl("hdnProductId") as HiddenField;
+                        HiddenField _quantity = rCartItem.Items[item].FindControl("hdnQuantity") as HiddenField;
+                        int quantityFromCart = Convert.ToInt32(quantity.Text);
+                        int productId = Convert.ToInt32(_productId.Value);
+                        int quantityFromDB = Convert.ToInt32(_quantity.Value);
+                        bool isTrue = false;
+                        int updatedQuantity = 1;
+                        if (quantityFromCart > quantityFromDB)
+                        {
+                            updatedQuantity = quantityFromCart;
+                            isTrue = true;
+                        }
+                        else if (quantityFromCart < quantityFromDB)
+                        {
+                            updatedQuantity = quantityFromCart;
+                            isTrue = true;
+                        }
+                        if (isTrue)
+                        {
+                            isCartUpdated = utils.UpdateCartQuantity(updatedQuantity, productId, Convert.ToInt32(Session["userId"]));
+                        }
+                    }
+                }
+                GetCartItems();
+            }
+
         }
 
         protected void rCartItem_ItemDataBound(object sender, RepeaterItemEventArgs e)
