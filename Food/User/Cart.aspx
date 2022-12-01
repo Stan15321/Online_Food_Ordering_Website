@@ -39,7 +39,7 @@
                         <td>
                             <img width="60" src="<%# Utils.GetImageUrl(Eval("ImageUrl")) %>" alt="" />
                         </td>
-                        <td>$<<asp:Label ID="lblPrice" runat="server" Text='<%# Eval("Price") %>'></asp:Label>
+                        <td>$<asp:Label ID="lblPrice" runat="server" Text='<%# Eval("Price") %>'></asp:Label>
                             <asp:HiddenField ID="hdnProductId" runat="server" Value='<%# Eval("ProductId") %>' />
                             <asp:HiddenField ID="hdnQuantity" runat="server" Value='<%# Eval("Qty") %>'/>
                             <asp:HiddenField ID="hdnPrdQuantity" runat="server" Value='<%# Eval("PrdQty") %>' />
@@ -58,7 +58,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td>$<<asp:Label ID="lblTotalPrice" runat="server"></asp:Label>
+                        <td>$<asp:Label ID="lblTotalPrice" runat="server"></asp:Label>
                         </td>
                         <td>
                             <asp:LinkButton ID="lbDelete" runat="server" Text="Remove" CommandName="remove" 

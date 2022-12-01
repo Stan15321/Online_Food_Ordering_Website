@@ -66,7 +66,7 @@ namespace Food.User
                 totalPrice.Text= calTotalPrice.ToString();
                 grandTotal += calTotalPrice;
             }
-            Session["grndTotalPrice"] = grandTotal;
+            Session["grandTotalPrice"] = grandTotal;
         }
         private sealed class CustomTemplate : ITemplate
         {
