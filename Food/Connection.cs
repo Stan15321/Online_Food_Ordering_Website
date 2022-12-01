@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Web;
+using Food.Admin;
 
 namespace Food
 {
@@ -21,6 +22,7 @@ namespace Food
     {
         SqlConnection con;
         SqlCommand cmd;
+        SqlDataAdapter sda;
         public static bool IsValidExtension(string fileName)
         {
             bool isValid = false;
@@ -76,6 +78,18 @@ namespace Food
                 con.Close();
             }
             return isUpdated;
+        }
+        public int CartCount(int userId)
+        {
+            con = new SqlConnection(Connection.GetConnectionString());
+            cmd = new SqlCommand("Cart_Crud", con);
+            cmd.Parameters.AddWithValue("@Action", "SELECT");
+            cmd.Parameters.AddWithValue("@UserId", userId);
+            cmd.CommandType = CommandType.StoredProcedure;
+            sda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            return dt.Rows.Count;
         }
     }
 }

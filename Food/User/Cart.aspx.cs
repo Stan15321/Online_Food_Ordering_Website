@@ -52,7 +52,34 @@ namespace Food.User
 
         protected void rCartItem_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-
+            Utils utils = new Utils();
+            if (e.CommandName == "remove")
+            {
+                con = new SqlConnection(Connection.GetConnectionString());
+                cmd = new SqlCommand("Cart_Crud", con);
+                cmd.Parameters.AddWithValue("@Action", "DELETE");
+                cmd.Parameters.AddWithValue("@ProductId", e.CommandArgument);
+                cmd.Parameters.AddWithValue("@UserId", Session["userId"]);
+                cmd.CommandType = CommandType.StoredProcedure;
+                try
+                {
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    GetCartItems();
+                    //cart count
+                    Session["cartCount"] = utils.CartCount(Convert.ToInt32(Session["userId"]));
+                    
+                }
+                catch (Exception ex)
+                {
+                    
+                    Response.Write("<script>alert('Error - " + ex.Message + " ');<script>");
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
         }
 
         protected void rCartItem_ItemDataBound(object sender, RepeaterItemEventArgs e)
