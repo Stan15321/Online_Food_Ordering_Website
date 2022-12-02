@@ -3,7 +3,9 @@
 
 Website using ASP.Net C# and SQL Server
 ## Still working on this project
--Adding Default page
+- Database Designs and Diagram
+- User Bootstrap Template Integration
+- Admin Bootstrap Template Integration
 
 
 -Adding Menu page
