@@ -12,6 +12,9 @@ Website using ASP.Net C# and SQL Server.
 - Server Database.
 - Manage Users in Admin Module.
 - User & Admin Login/Logout.
+- User Profile.
+- User Menu(Products.
+- User Cart(Add To Cart)
 
 
 -Adding Menu page
