@@ -1,11 +1,17 @@
 ## Online Food Ordering Website
 
 
-Website using ASP.Net C# and SQL Server
-## Still working on this project
-- Database Designs and Diagram
-- User Bootstrap Template Integration
-- Admin Bootstrap Template Integration
+Website using ASP.Net C# and SQL Server.
+## Still working on this project.
+- Database Designs and Diagram.
+- User Bootstrap Template Integration.
+- Admin Bootstrap Template Integration.
+- Add Category in Admin Module.
+- View,Update,Delete Category in Admin Module.
+- Create,Read,Update,Delete Product in Admin Panel.
+- Server Database.
+- Manage Users in Admin Module.
+- User & Admin Login/Logout.
 
 
 -Adding Menu page
