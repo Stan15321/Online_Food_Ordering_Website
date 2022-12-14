@@ -18,4 +18,7 @@ Website using ASP.Net C# and SQL Server.
 
 ![image](https://user-images.githubusercontent.com/109627707/207660614-72653913-2b5b-4ffa-89ef-7695fe80a93b.png)
 ![image](https://user-images.githubusercontent.com/109627707/198729063-a48ddeea-a543-4fe9-b9d4-0902df6b9a51.png)
+![image](https://user-images.githubusercontent.com/109627707/207660815-ea1492df-be6e-495b-bca9-6472b46f28af.png)
+![image](https://user-images.githubusercontent.com/109627707/207660925-82e885ef-cd16-4c68-bba6-06603c5ab687.png)
+
 
