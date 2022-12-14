@@ -22,7 +22,7 @@ Website using ASP.Net C# and SQL Server.
 ## Login Page
 ![image](https://user-images.githubusercontent.com/109627707/207660815-ea1492df-be6e-495b-bca9-6472b46f28af.png)
 ## Register Page
-- if the user don't have an account
+- If the user don't have an account
 ![image](https://user-images.githubusercontent.com/109627707/207660925-82e885ef-cd16-4c68-bba6-06603c5ab687.png)
 ## User Information Page
 - The user can also check their puchase history here
