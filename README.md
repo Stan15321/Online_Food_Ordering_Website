@@ -33,6 +33,10 @@ Website using ASP.Net C# and SQL Server.
 ## Contact form:
 - User can leave a message here.
 ![image](https://user-images.githubusercontent.com/109627707/207960033-2446d758-3315-42d8-9f36-4b584838ce7c.png)
+## Discount menu:
+- Discounts in the menu.
+![image](https://user-images.githubusercontent.com/109627707/207970003-f214bd97-7cb6-41ae-b437-bb3665a23235.png)
+
 
 
 
