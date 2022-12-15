@@ -31,7 +31,7 @@ Website using ASP.Net C# and SQL Server.
 - Where the user can checkout the products, update the cart or continue shopping.
 ![image](https://user-images.githubusercontent.com/109627707/207662697-06f9c89f-7215-49b4-88cc-aaa40821fc6f.png)
 ## Contact form:
-- l
+- User can leave a message here.
 ![image](https://user-images.githubusercontent.com/109627707/207960033-2446d758-3315-42d8-9f36-4b584838ce7c.png)
 
 
