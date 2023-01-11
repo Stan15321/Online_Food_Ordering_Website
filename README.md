@@ -36,10 +36,3 @@ Website using ASP.Net C# and SQL Server.
 ## Discount menu:
 - Discounts in the menu.
 ![image](https://user-images.githubusercontent.com/109627707/207970003-f214bd97-7cb6-41ae-b437-bb3665a23235.png)
-
-
-
-
-
-
-
